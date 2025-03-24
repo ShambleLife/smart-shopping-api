@@ -28,4 +28,24 @@ router.post('/', async (req, res) => {
   }
 });
 
+// Update quantity (increment or decrement)
+router.put('/:id', async (req, res) => {
+    try {
+      const { change } = req.body; // change should be +1 or -1
+      const item = await Item.findById(req.params.id);
+  
+      if (!item) {
+        return res.status(404).json({ error: 'Item not found' });
+      }
+  
+      item.quantity = Math.max(1, item.quantity + change); // never less than 1
+      const updated = await item.save();
+  
+      res.json(updated);
+    } catch (err) {
+      console.error('Error updating quantity:', err);
+      res.status(500).json({ error: 'Error updating quantity' });
+    }
+  });
+
 module.exports = router;
