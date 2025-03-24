@@ -1,65 +1,59 @@
 const express = require('express');
 const router = express.Router();
 const Item = require('../models/Item');
+const auth = require('../middleware/auth');
 
-// Get all items
-router.get('/', async (req, res) => {
+// GET all items for the logged-in user
+router.get('/', auth, async (req, res) => {
   try {
-    console.log('GET /items called');
-    const items = await Item.find().sort({ createdAt: -1 });
+    const items = await Item.find({ userId: req.userId }).sort({ createdAt: -1 });
     res.json(items);
   } catch (err) {
-    console.error('Error fetching items:', err);  // <-- add this for clarity
     res.status(500).json({ error: 'Error fetching items' });
   }
 });
 
-// Add new item
-router.post('/', async (req, res) => {
+// POST a new item for the logged-in user
+router.post('/', auth, async (req, res) => {
   try {
-    console.log('POST /items with body:', req.body);
     const { name, quantity } = req.body;
-    const newItem = new Item({ name, quantity });
+    const newItem = new Item({
+      name,
+      quantity,
+      userId: req.userId
+    });
     const saved = await newItem.save();
     res.json(saved);
   } catch (err) {
-    console.error('Error saving item:', err);  // <-- helpful for debugging
     res.status(400).json({ error: 'Error saving item' });
   }
 });
 
-// Update quantity (increment or decrement)
-router.put('/:id', async (req, res) => {
-    try {
-      const { change } = req.body; // change should be +1 or -1
-      const item = await Item.findById(req.params.id);
-  
-      if (!item) {
-        return res.status(404).json({ error: 'Item not found' });
-      }
-  
-      item.quantity = Math.max(1, item.quantity + change); // never less than 1
-      const updated = await item.save();
-  
-      res.json(updated);
-    } catch (err) {
-      console.error('Error updating quantity:', err);
-      res.status(500).json({ error: 'Error updating quantity' });
-    }
-  });
+// PUT (update quantity) of an item if it belongs to the user
+router.put('/:id', auth, async (req, res) => {
+  const { change } = req.body;
 
-  // DELETE an item by ID
-router.delete('/:id', async (req, res) => {
-    try {
-      const deletedItem = await Item.findByIdAndDelete(req.params.id);
-      if (!deletedItem) {
-        return res.status(404).json({ error: 'Item not found' });
-      }
-      res.json({ message: 'Item deleted', item: deletedItem });
-    } catch (err) {
-      console.error('Error deleting item:', err);
-      res.status(500).json({ error: 'Error deleting item' });
-    }
-  });
+  try {
+    const item = await Item.findOne({ _id: req.params.id, userId: req.userId });
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    item.quantity = Math.max(1, item.quantity + change);
+    const updated = await item.save();
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: 'Error updating item' });
+  }
+});
+
+// DELETE an item if it belongs to the user
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const deleted = await Item.findOneAndDelete({ _id: req.params.id, userId: req.userId });
+    if (!deleted) return res.status(404).json({ error: 'Item not found' });
+    res.json({ message: 'Item deleted' });
+  } catch (err) {
+    res.status(400).json({ error: 'Error deleting item' });
+  }
+});
 
 module.exports = router;
