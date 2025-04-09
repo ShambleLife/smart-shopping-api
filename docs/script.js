@@ -41,7 +41,32 @@ async function login() {
       alert('Something went wrong during login.');
     }
   }
-
+  async function register() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+  
+    console.log('Registering user:', { username, password });
+  
+    try {
+      const res = await fetch(`${apiBase}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        alert('User registered! Now try logging in.');
+      } else {
+        alert(data.message || 'Registration failed.');
+      }
+  
+    } catch (err) {
+      console.error('Register error:', err);
+      alert('Something went wrong during registration.');
+    }
+  }
 async function loadItems() {
   const res = await fetch(`${apiBase}/items`, {
     headers: { Authorization: `Bearer ${token}` }
