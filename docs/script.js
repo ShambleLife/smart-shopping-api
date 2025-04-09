@@ -2,28 +2,35 @@ const apiBase = 'https://smart-shopping-api-1k1z.onrender.com';
 let token = '';
 
 async function login() {
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
-
-  console.log ('Sending login data', { username, password });
-
-  const res = await fetch(`${apiBase}/auth/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-
-  const data = await res.json();
-
-  if (res.ok) {
-    token = data.token;
-    document.getElementById('login-section').style.display = 'none';
-    document.getElementById('grocery-section').style.display = 'block';
-    loadItems();
-  } else {
-    alert(data.message || 'Login failed.');
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+  
+    console.log('Sending login data:', { username, password });
+  
+    try {
+      const res = await fetch(`${apiBase}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+  
+      const data = await res.json();
+  
+      console.log('Server response:', res.status, data);
+  
+      if (res.ok) {
+        token = data.token;
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('grocery-section').style.display = 'block';
+        loadItems();
+      } else {
+        alert(data.message || 'Login failed.');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      alert('Something went wrong during login.');
+    }
   }
-}
 
 async function loadItems() {
   const res = await fetch(`${apiBase}/items`, {
