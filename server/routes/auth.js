@@ -8,13 +8,13 @@ const JWT_SECRET = process.env.JWT_SECRET || 'supersecret'; // replace with stro
 
 // Register new user
 router.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   try {
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({ username });
     if (existing) return res.status(400).json({ error: 'User already exists' });
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hashed });
+    const user = new User({ username, password: hashed });
     await user.save();
     res.json({ message: 'User registered successfully' });
   } catch (err) {
@@ -25,9 +25,9 @@ router.post('/register', async (req, res) => {
 
 // Login existing user
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) return res.status(400).json({ error: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
