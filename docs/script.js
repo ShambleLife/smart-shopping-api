@@ -14,7 +14,17 @@ async function login() {
         body: JSON.stringify({ username, password })
       });
   
-      const data = await res.json();
+      // Check if the server responded with a JSON body
+      const contentType = res.headers.get("Content-Type") || "";
+      let data = {};
+  
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        console.warn("Non-JSON response:", text);
+        data.message = text;
+      }
   
       console.log('Server response:', res.status, data);
   
