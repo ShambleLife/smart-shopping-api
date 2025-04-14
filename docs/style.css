@@ -1,47 +1,18 @@
 body {
-  font-family: sans-serif;
-  background: #f5f5f5;
-  padding: 20px;
-}
-
-input, button {
-  margin: 5px;
-  padding: 8px;
-  border: 2px solid #4CAF50; /* green border */
-  border-radius: 5px;
-}
-
-button {
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-#login-section, #grocery-section {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 400px;
-  margin: 20px auto;
-  border: 2px solid #4CAF50; /* green border */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-@keyframes slowBounce {
-  0%, 100% {
-    transform: translateY(0);
+    font-family: sans-serif;
+    background: #f5f5f5;
+    padding: 20px;
   }
-  50% {
-    transform: translateY(-10px);
+  
+  input, button {
+    margin: 5px;
+    padding: 8px;
   }
-}
-
-#login-section {
-  animation: slowBounce 3s ease-in-out infinite;
-}
-
-
+  
+  #login-section, #grocery-section {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    margin: 20px auto;
+  }
