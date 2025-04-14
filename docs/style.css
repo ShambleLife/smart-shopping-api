@@ -28,6 +28,6 @@ button:hover {
   max-width: 400px;
   margin: 20px auto;
   border: 2px solid #4CAF50; /* green border */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* subtle shadow */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
