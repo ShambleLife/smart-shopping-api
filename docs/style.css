@@ -11,13 +11,19 @@ body, html {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #fff;
+  background-color: #757F64;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logo {
   font-weight: bold;
   font-size: 20px;
+  color: #E9E2D8
+}
+
+.logo img {
+  height: 40px;
+  width: auto;
 }
 
 .nav {
@@ -33,9 +39,9 @@ body, html {
 }
 
 .signup-btn {
-  padding: 10px 16px;
-  background-color: #5a67d8;
-  color: white;
+  padding: 10px 32px;
+  background-color: #C7CDBF;
+  color: #E9E2D8;
   border: none;
   border-radius: 6px;
   text-decoration: none;
@@ -44,12 +50,22 @@ body, html {
 }
 
 .signup-btn:hover {
-  background-color: #434190;
+  background-color: #B1B6A8;
+}
+
+.signup-box small {
+  color: #E9E2D8;
+  font-size: 13px;
+}
+
+.signup-box small a {
+  color: #E9E2D8;
+  text-decoration: underline;
 }
 
 .nav a {
   text-decoration: none;
-  color: #333;
+  color: #E9E2D8;
   font-weight: 500;
 }
 
