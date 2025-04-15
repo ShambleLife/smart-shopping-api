@@ -70,7 +70,7 @@ body, html {
 }
 
 /* FONT SLECTIONS */
-.header, .nav, .signup-btn, .tagline, .features-header, .about-header, .about-item {
+.header, .nav, .signup-btn, .tagline, .features-header, .about-header, .about-item, .register-left-text {
   font-family: 'Quicksand', sans-serif;
 }
 
@@ -217,45 +217,79 @@ body, html {
   font-weight: bold;
 }
 
-/* REGISTRATION PAGE SPECIAL STYLING */
+/* REGISTRATION PAGE  */
+
 .register-body {
-  background: url('https://images.unsplash.com/photo-1503264116251-35a269479413') no-repeat center center fixed;
-  background-size: cover;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.register-container {
   display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Left Side (Image Panel) */
+.register-left {
+  width: 65%;
+  background-color: #757F64;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
-.container {
-  background: rgba(255, 255, 255, 0.9);
+.register-left-text {
+  font-size: 40px;
+  margin-bottom: 20px;
+  color: #E9E2D8;
+}
+
+.register-img {
+  max-width: 65%;
+  max-height: 65%;
+}
+
+/* Right Side (Form Panel) */
+.register-right {
+  width: 35%;
+  background-color: #CB7A5C;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-  max-width: 400px;
-  width: 100%;
+  color: #E9E2D8;
 }
 
-.container h2 {
-  text-align: center;
-  color: #333;
+.register-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #E9E2D8;
+  font-family: 'Quicksand', sans-serif;
 }
 
-input[type="text"],
-input[type="password"] {
+.form-box {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.form-box input {
   width: 100%;
-  padding: 12px 15px;
-  margin: 10px 0;
+  padding: 12px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 16px;
 }
 
-button {
+.form-box button {
   width: 100%;
   padding: 12px;
-  background-color: #5a67d8;
-  color: white;
+  background-color: #5C757A;
+  color: #E9E2D8;
   font-size: 16px;
   border: none;
   border-radius: 8px;
@@ -263,6 +297,18 @@ button {
   transition: background 0.3s ease;
 }
 
-button:hover {
-  background-color: #434190;
+.form-box button:hover {
+  background-color: #4A6165;
+}
+
+.login-prompt {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #5C757A;
+  text-align: center;
+}
+
+.login-prompt a {
+  color: #5C757A;
+  text-decoration: underline;
 }
