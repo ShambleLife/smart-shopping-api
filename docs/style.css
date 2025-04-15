@@ -70,11 +70,11 @@ body, html {
 }
 
 /* FONT SLECTIONS */
-.header, .nav, .signup-btn, .tagline {
+.header, .nav, .signup-btn, .tagline, .features-header {
   font-family: 'Quicksand', sans-serif;
 }
 
-.subline {
+.subline, .more {
   font-family: 'Bree Serif', serif;
 }
 
@@ -110,13 +110,15 @@ body, html {
 
 /* FEATURES SECTION */
 .features {
+  background-color: #C7CDBF;
   padding: 60px 20px;
   text-align: center;
 }
 
 .features h2 {
-  font-size: 36px;
+  font-size: 55px;
   margin-bottom: 30px;
+  color: #CB7A5C;
 }
 
 .feature-grid {
@@ -127,15 +129,15 @@ body, html {
 }
 
 .feature-grid img {
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   object-fit: cover;
 }
 
 .more {
   margin-top: 20px;
-  font-size: 16px;
-  font-style: italic;
+  font-size: 25px;
+  color: #5C757A;
 }
 
 /* ABOUT US SECTION */
