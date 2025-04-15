@@ -22,7 +22,7 @@ body, html {
 }
 
 .logo img {
-  height: 40px;
+  height: 80px;
   width: auto;
 }
 
@@ -40,7 +40,7 @@ body, html {
 
 .signup-btn {
   padding: 10px 32px;
-  background-color: #C7CDBF;
+  background-color: #5C757A;
   color: #E9E2D8;
   border: none;
   border-radius: 6px;
@@ -50,7 +50,7 @@ body, html {
 }
 
 .signup-btn:hover {
-  background-color: #B1B6A8;
+  background-color: #4A6165;
 }
 
 .signup-box small {
@@ -69,26 +69,43 @@ body, html {
   font-weight: 500;
 }
 
+/* FONT SLECTIONS */
+.header, .nav, .signup-btn, .tagline {
+  font-family: 'Quicksand', sans-serif;
+}
+
+.subline {
+  font-family: 'Bree Serif', serif;
+}
+
 /* HERO SECTION */
 .hero {
-  background-color: #f7fafc;
-  padding: 100px 20px;
+  background-color: #E9E2D8;
+  padding-top: 30px;
+  padding-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
   text-align: center;
 }
 
 .tagline {
-  font-size: 48px;
+  font-size: 65px;
   margin-bottom: 10px;
+  color: #757F64;
 }
 
 .subline {
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 30px;
+  margin-bottom: 0px;
+  color: #CB7A5C;
 }
 
 .hero-img {
-  max-width: 300px;
+  width: 80%;
+  max-width: 800px;
   height: auto;
+  display: block;
+  margin: 0px auto 0 auto;
 }
 
 /* FEATURES SECTION */
