@@ -4,62 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Register</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: url('https://images.unsplash.com/photo-1503264116251-35a269479413') no-repeat center center fixed;
-      background-size: cover;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.9);
-      padding: 40px;
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-      max-width: 400px;
-      width: 100%;
-    }
-
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-
-    input[type="text"],
-    input[type="password"] {
-      width: 100%;
-      padding: 12px 15px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #5a67d8;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #434190;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-
+<body class="register-body">
   <div class="container">
     <h2>Register</h2>
     <form id="registerForm">
@@ -75,7 +22,7 @@
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
-      const res = await fetch('https://shamblelife.github.io/smart-shopping-api/', {
+      const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -89,6 +36,5 @@
       }
     });
   </script>
-
 </body>
 </html>

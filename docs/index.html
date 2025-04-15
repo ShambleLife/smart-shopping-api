@@ -2,29 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smart Grocery List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baskit</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Smart Grocery List</h1>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">[LOGO]</div>
+    <nav class="nav">
+      <a href="#features">Features</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact</a>
+      <div class="signup-box">
+        <a href="register.html" class="signup-btn">Sign Up</a>
+        <small>Already a member? <a href="login.html">Log In</a></small>
+      </div>
+    </nav>
+  </header>
 
-  <div id="login-section">
-    <h2>Login</h2>
-    <input type="text" id="username" placeholder="Username">
-    <input type="password" id="password" placeholder="Password">
-    <button onclick="login()">Login</button>
-    <button onclick ="register()">Register</button>
-  </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="tagline">TagLine</h1>
+    <p class="subline">Sub-Line</p>
+    <img src="cute-placeholder.png" alt="Cute Image" class="hero-img" />
+  </section>
 
-  <div id="grocery-section" style="display:none;">
-    <h2>Your Grocery List</h2>
-    <ul id="grocery-list"></ul>
-    <input type="text" id="new-item" placeholder="New item">
-    <button onclick="addItem()">Add</button>
-    <button onclick="logout()">Logout</button>
-  </div>
+  <!-- Features Section -->
+  <section id="features" class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <img src="feature1.png" />
+      <img src="feature2.png" />
+      <img src="feature3.png" />
+      <img src="feature4.png" />
+    </div>
+    <p class="more">And so much more</p>
+  </section>
 
+  <!-- About Us Section -->
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p class="about-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam et sapien eu sem pulvinar posuere. Suspendisse nec eros eget nulla dapibus dapibus.</p>
+    <div class="about-grid">
+      <img src="about1.png" />
+      <img src="about2.png" />
+      <img src="about3.png" />
+      <img src="about4.png" />
+      <img src="about5.png" class="center-img" />
+    </div>
+    <p class="lower-tag">Lower-Tag</p>
+    <p class="lower-sub">Lower-Tag Sub-Line</p>
+    <a href="register.html" class="signup-btn">Sign Up</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-logo">[LOGO]</div>
+    <a href="#contact" class="contact-btn">Contact Us</a>
+  </footer>
   <script src="script.js"></script>
 </body>
 </html>
