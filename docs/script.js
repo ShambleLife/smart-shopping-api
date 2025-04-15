@@ -14,7 +14,7 @@ async function login() {
         body: JSON.stringify({ username, password })
       });
   
-      // Check if the server responded with a JSON body
+      
       const contentType = res.headers.get("Content-Type") || "";
       let data = {};
   

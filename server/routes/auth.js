@@ -4,17 +4,17 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'supersecret'; // replace with strong secret in .env
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecret'; // 
 
 // Register new user
 router.post('/register', async (req, res) => {
-  const { username, password } = req.body;
+  const { firstname, lastname, username, password } = req.body;
   try {
     const existing = await User.findOne({ username });
     if (existing) return res.status(400).json({ error: 'User already exists' });
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashed });
+    const user = new User({ firstname, lastname, username, password: hashed });
     await user.save();
     res.json({ message: 'User registered successfully' });
   } catch (err) {

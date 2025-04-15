@@ -254,7 +254,7 @@ body, html {
 /* Right Side (Form Panel) */
 .register-right {
   width: 35%;
-  background-color: #CB7A5C;
+  background-color: #C7CDBF;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -263,9 +263,9 @@ body, html {
 }
 
 .register-title {
-  font-size: 28px;
+  font-size: 30px;
   margin-bottom: 20px;
-  color: #E9E2D8;
+  color: #757F64;
   font-family: 'Quicksand', sans-serif;
 }
 
@@ -288,7 +288,7 @@ body, html {
 .form-box button {
   width: 100%;
   padding: 12px;
-  background-color: #5C757A;
+  background-color: #757F64;
   color: #E9E2D8;
   font-size: 16px;
   border: none;
@@ -298,7 +298,7 @@ body, html {
 }
 
 .form-box button:hover {
-  background-color: #4A6165;
+  background-color: #586F50;
 }
 
 .login-prompt {
