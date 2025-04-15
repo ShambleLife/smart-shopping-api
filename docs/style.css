@@ -217,11 +217,11 @@ body, html {
   font-weight: bold;
 }
 
-/* REGISTRATION PAGE  */
-
+/* <-- REGISTRATION PAGE -->  */
+/* #region Registration Styles */
 .register-body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .register-container {
@@ -241,7 +241,7 @@ body, html {
 }
 
 .register-left-text {
-  font-size: 40px;
+  font-size: 65px;
   margin-bottom: 20px;
   color: #E9E2D8;
 }
@@ -318,3 +318,101 @@ body, html {
   color: #5C757A;
   text-decoration: underline;
 }
+/* #endregion */
+
+/* <-- LOGIN PAGE -->  */
+/* #region Login Styles */
+
+.login-body {
+  
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+/*Left Side (Image Panel)*/
+.login-left {
+  width: 65%;
+  background-color: #5C757A;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-left-text {
+  font-size: 65px;
+  margin-bottom: 20px;
+  color: #E9E2D8;
+  text-align: center;
+}
+
+.login-img {
+  max-width: 65%;
+  max-height: 65%;
+}
+/* Right Side (Form Panel) */
+.login-right {
+  width: 35%;
+  background-color: #E9E2D8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+  color: #000000;
+}
+
+.login-logo {
+  display: block;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.login-title {
+  font-size: 30px;
+  margin-bottom: 20px;
+  color: #5C757A;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.login-right input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.login-right button {
+  background-color: #5C757A;
+  color: #E9E2D8;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.login-right button:hover {
+  background-color: #4A6165;
+}
+
+.register-prompt {
+  margin-top: 10px;
+  font-size: 17px;
+  color: #5C757A;
+  text-align: center;
+}
+
+.register-prompt a {
+  color: #5C757A;
+  text-decoration: underline;
+}
+/* #endregion */
