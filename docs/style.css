@@ -262,6 +262,12 @@ body, html {
   color: #E9E2D8;
 }
 
+.register-logo {
+  display: block;
+  margin: 0 auto;
+  max-width: 200px;
+}
+
 .register-title {
   font-size: 30px;
   margin-bottom: 20px;
@@ -303,7 +309,7 @@ body, html {
 
 .login-prompt {
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 17px;
   color: #5C757A;
   text-align: center;
 }
