@@ -40,7 +40,7 @@ body, html {
 
 .signup-btn {
   padding: 10px 32px;
-  background-color: #5C757A;
+  background-color: #CB7A5C;
   color: #E9E2D8;
   border: none;
   border-radius: 6px;
@@ -50,7 +50,7 @@ body, html {
 }
 
 .signup-btn:hover {
-  background-color: #4A6165;
+  background-color: #B9664A;
 }
 
 .signup-box small {
@@ -70,11 +70,11 @@ body, html {
 }
 
 /* FONT SLECTIONS */
-.header, .nav, .signup-btn, .tagline, .features-header {
+.header, .nav, .signup-btn, .tagline, .features-header, .about-header, .about-item {
   font-family: 'Quicksand', sans-serif;
 }
 
-.subline, .more {
+.subline, .more, .about-text, .lower-tag {
   font-family: 'Bree Serif', serif;
 }
 
@@ -142,19 +142,22 @@ body, html {
 
 /* ABOUT US SECTION */
 .about {
+  background-color: #5C757A;
   padding: 60px 20px;
   text-align: center;
 }
 
 .about h2 {
-  font-size: 36px;
+  font-size: 55px;
   margin-bottom: 20px;
+  color: #E9E2D8;
 }
 
 .about-text {
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto 40px auto;
   line-height: 1.6;
+  color: #C7CDBF;
 }
 
 .about-grid {
@@ -162,12 +165,20 @@ body, html {
   justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
+  flex-wrap: wrap;
+  text-align: center;
 }
 
 .about-grid img {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.about-item {
+  font-size: 17px;
+  margin-bottom: 20px;
+  color: #E9E2D8;
 }
 
 .center-img {
@@ -175,8 +186,9 @@ body, html {
 }
 
 .lower-tag {
-  font-size: 20px;
+  font-size: 30px;
   margin-top: 40px;
+  color: #E9E2D8;
 }
 
 .lower-sub {
@@ -191,12 +203,17 @@ body, html {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background-color: #eee;
+  background-color: #E9E2D8;
+}
+
+.footer-logo img {
+  height: 80px;
+  width: auto;
 }
 
 .contact-btn {
   text-decoration: none;
-  color: #333;
+  color: #CB7A5C;
   font-weight: bold;
 }
 
