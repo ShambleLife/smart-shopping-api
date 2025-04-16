@@ -939,9 +939,11 @@ body, html {
 
 .comparison-main {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 2rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  gap: 1rem;
   background-color: #fff;
 }
 
