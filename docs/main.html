@@ -73,11 +73,11 @@
             </div>
           </div>
 
-      <div class="box box-b5">
+      <!--<div class="box box-b5">
         <h2>B5</h2>
       </div>
     </aside>
-  </main>
+  </main> -->
 
   <script>
     // Grab user's first name from storage
@@ -250,18 +250,29 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 
     //Meal Planning Logic
 
-    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-const plannerContainer = document.getElementById('meal-planner');
 
-async function fetchMealPlan() {
+    async function fetchMealPlan() {
   const token = localStorage.getItem("token");
-  const username = userData.username; // Ensure userData is defined and contains username
-  const res = await fetch(`https://smart-shopping-api-1k1z.onrender.com/mealplan/${username}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const data = await res.json();
-  return data.week || {};
+  try {
+    const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/mealplan', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+    return data.week || {};
+  } catch (err) {
+    console.error('Fetch failed:', err);
+    return {}; // fallback to render empty state
+  }
 }
+
+// Initialize
+fetchMealPlan()
+  .then(renderMealPlanner)
+  .catch(err => {
+    console.error('Unexpected error:', err);
+    renderMealPlanner(); // fallback if something breaks
+  });
 
 async function saveMealPlan(updatedWeek) {
   const token = localStorage.getItem("token");
@@ -278,6 +289,9 @@ async function saveMealPlan(updatedWeek) {
   });
 }
 
+const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const plannerContainer = document.getElementById('meal-planner');
+
 function renderMealPlanner(weekData) {
   plannerContainer.innerHTML = '';
 
@@ -289,25 +303,38 @@ function renderMealPlanner(weekData) {
 
     const header = document.createElement('div');
     header.className = 'meal-header';
-    header.textContent = day;
+
+    const title = document.createElement('span');
+    title.textContent = day;
+
+    const toggle = document.createElement('span');
+    toggle.className = 'meal-toggle';
+    toggle.textContent = '+';
+
+    header.appendChild(title);
+    header.appendChild(toggle);
 
     const body = document.createElement('div');
     body.className = 'meal-body';
 
-    meals.forEach((meal, index) => {
-      const input = document.createElement('textarea');
-      input.rows = 1;
-      input.value = meal;
-      input.addEventListener('change', () => {
-        weekData[day][index] = input.value;
-        saveMealPlan(weekData);
-      });
-      body.appendChild(input);
+    const list = document.createElement('ul');
+
+    meals.forEach((meal, i) => {
+      const li = document.createElement('li');
+      li.textContent = meal || ""; // shows underline only
+      list.appendChild(li);
     });
 
+    body.appendChild(list);
     header.addEventListener('click', () => {
-      document.querySelectorAll('.meal-body').forEach(el => el.style.display = 'none');
-      body.style.display = body.style.display === 'flex' ? 'none' : 'flex';
+      const isOpen = body.style.display === 'block';
+      document.querySelectorAll('.meal-body').forEach(b => b.style.display = 'none');
+      document.querySelectorAll('.meal-toggle').forEach(t => t.textContent = '+');
+
+      if (!isOpen) {
+        body.style.display = 'block';
+        toggle.textContent = '–';
+      }
     });
 
     dayDiv.appendChild(header);

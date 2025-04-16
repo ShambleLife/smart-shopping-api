@@ -738,15 +738,10 @@ body, html {
   opacity: 1;
 }
 
-.box-b4 {
-  height: 150px; /* match height of B2 */
-  background-color: #f7f7f7;
-}
-
-.box-b5 {
-  height: 150px; /* also match B2 */
+/* .box-b5 {
+  height: 150px;
   background-color: #e6e6e6;
-}
+} */
 
 .box h2, .box h3 {
   margin-top: 0;
@@ -757,35 +752,50 @@ body, html {
 
 /* <-- MEAL PLANNING --> */
 /* #region Meal Planning */
+.box-b4 {
+  flex: 1;
+  background-color: #f7f7f7;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .meal-day {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-  background-color: #E9E2D8;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .meal-header {
-  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #5C757A;
-  color: #fff;
+  color: white;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   font-family: 'Bree Serif', serif;
 }
 
-.meal-body {
-  padding: 1rem;
-  display: none;
-  flex-direction: column;
-  gap: 0.5rem;
+.meal-toggle {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
 }
 
-.meal-body textarea {
-  width: 100%;
-  resize: none;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-family: 'Quicksand', sans-serif;
+.meal-body {
+  display: none;
+  padding-left: 2rem;
+}
+
+.meal-body ul {
+  list-style-type: disc;
+  padding-left: 1rem;
+}
+
+.meal-body li {
+  border-bottom: 1px solid #ccc;
+  padding: 0.4rem 0;
+  margin-bottom: 0.2rem;
 }
 /* #endregion */
