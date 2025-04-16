@@ -360,56 +360,38 @@ function renderMealPlanner(weekData) {
 fetchMealPlan().then(renderMealPlanner);
 
 document.getElementById("shop-button").addEventListener("click", async () => {
+  const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user"));
-  const key = `groceryList_${user.username}`;
-  const list = JSON.parse(localStorage.getItem(key)) || [];
+  const username = user?.username;
 
-  const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ list })
+  const storePrefs = JSON.parse(localStorage.getItem(`storePrefs_${username}`) || "[]");
+  const list = JSON.parse(localStorage.getItem(`groceryList_${username}`) || "[]");
+
+  console.log("Sending to shop route:", {
+    stores: storePrefs,
+    items: list
   });
 
-  const data = await res.json();
-  localStorage.setItem('shopResults', JSON.stringify(data));
-  window.location.href = 'shop-results.html';
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  const shopBtn = document.getElementById('shop-list-btn');
-  if (shopBtn) {
-    shopBtn.addEventListener('click', async () => {
-      const user = JSON.parse(localStorage.getItem('user'));
-      const token = localStorage.getItem('token');
-      const listKey = `groceryList_${user?.username}`;
-      const groceryList = JSON.parse(localStorage.getItem(listKey)) || [];
-      const preferredStores = JSON.parse(localStorage.getItem(`storePrefs_${user?.username}`)) || [];
-
-      if (!groceryList.length || !preferredStores.length) {
-        alert("Make sure you have a list and preferred stores selected.");
-        return;
-      }
-
-      try {
-        const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({ list: groceryList, stores: preferredStores })
-        });
-
-        const result = await res.json();
-        console.log('Price comparison:', result);
-        alert("Check the console for mock price comparison results!");
-      } catch (err) {
-        console.error("Shop error:", err);
-        alert("Something went wrong with the comparison.");
-      }
+  try {
+    const res = await fetch("https://smart-shopping-api-1k1z.onrender.com/shop", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ stores: storePrefs, items: list })
     });
+
+    const data = await res.json();
+    console.log("Shop route response:", data);
+
+    // For now, just store in localStorage for future use
+    localStorage.setItem("shopResults", JSON.stringify(data));
+
+    // Redirect to a result page later if desired
+    // window.location.href = "shop-results.html";
+  } catch (err) {
+    console.error("Error hitting shop route:", err);
   }
 });
   </script>
