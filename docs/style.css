@@ -709,13 +709,16 @@ body, html {
 /* #endregion */
 /* #region Main Page Other Box & Box Header Styles */
 .box-b2 {
+  background-color: transparent;
+  padding: 0;
   display: flex;
-  height: 150px; /* fixed height */
+  height: 150px;
+  border: 2px solid #ccc
 }
 
 .box-b2-left {
   width: 15%;
-  background-color: #ccc;
+  background-color: #CB7A5C;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -723,9 +726,16 @@ body, html {
   border-bottom-left-radius: 12px;
 }
 
+.box-b2-left h3 {
+  font-family: 'Bree Serif', serif;
+  font-size: 2rem;
+  color: #E9E2D8;
+  margin-bottom: 0.75rem;
+}
+
 .box-b2-right {
   width: 85%;
-  background-color: #f0f0f0;
+  background-color: #e9e2d8;
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
 }
@@ -958,9 +968,11 @@ body, html {
 }
 
 .store-logo {
-  max-width: 100px;
+  height: 60px;
+  width: auto;
   display: block;
-  margin: 0 auto 0.5rem auto;
+  margin: 0 auto 1rem auto;
+  object-fit: contain;
 }
 
 .store-column h2 {
@@ -1006,4 +1018,48 @@ body, html {
 
 .back-btn:hover {
   background-color: #4a5f50;
+}
+
+/* <-- RECIPE SECTION --> */
+.recipe-filter {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.5rem 0 1rem;
+  flex-wrap: wrap;
+}
+
+.recipe-filter a {
+  color: #5C757A;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: 'Quicksand', sans-serif;
+  background-color: #E9E2D8;
+  padding: 0.25rem 0.75rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.recipe-filter a:hover {
+  background-color: #CB7A5C;
+  color: white;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto); 
+  justify-content: center; 
+  gap: 1rem;
+  font-family: 'Quicksand', sans-serif;
+  text-align: center;
+}
+
+.recipe-item {
+  background-color: #fff;
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  min-width: 100px;  
+  max-width: 250px;   
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  opacity: 0.6;
 }
