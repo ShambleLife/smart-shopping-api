@@ -4,62 +4,39 @@
   <meta charset="UTF-8" />
   <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Quicksand&display=swap" rel="stylesheet" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shop Your List</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Price Comparison</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
-<body class="main-body">
+<body class="comparison-body">
   <header class="main-header">
     <img src="images/logo.png" alt="Logo" class="main-logo" />
-    <h1 class="main-greeting">Compare Prices</h1>
+    <h1 class="main-greeting">Compare Prices Across Stores</h1>
   </header>
 
-  <main class="main-content">
-    <section class="box">
-      <div class="shop-results" id="shop-results"></div>
-      <button onclick="window.location.href='main.html'">Back to List</button>
-    </section>
+  <main class="comparison-main">
+    <div class="store-column" id="publix-column">
+      <img src="images/publix.png" alt="Publix" class="store-logo" />
+      <h2>Publix</h2>
+      <div class="store-items" id="publix-items"></div>
+    </div>
+
+    <div class="store-column" id="kroger-column">
+      <img src="images/kroger.png" alt="Kroger" class="store-logo" />
+      <h2>Kroger</h2>
+      <div class="store-items" id="kroger-items"></div>
+    </div>
+
+    <div class="store-column" id="wholefoods-column">
+      <img src="images/wholefoods.png" alt="Whole Foods" class="store-logo" />
+      <h2>Whole Foods</h2>
+      <div class="store-items" id="wholefoods-items"></div>
+    </div>
   </main>
 
-  <script>
-    const shopData = JSON.parse(localStorage.getItem('shopResults'));
-    const container = document.getElementById('shop-results');
+  <div class="back-btn-container">
+    <a href="main.html" class="back-btn">Back to List</a>
+  </div>
 
-    function renderResults(data) {
-      const storeNames = Object.keys(data);
-      const columns = document.createElement('div');
-      columns.style.display = 'flex';
-      columns.style.justifyContent = 'space-between';
-      columns.style.gap = '2rem';
-
-      storeNames.forEach(store => {
-        const col = document.createElement('div');
-        col.className = 'shop-column';
-        col.innerHTML = `<h2>${store}</h2>`;
-
-        const items = data[store].breakdown;
-        items.forEach(item => {
-          const row = document.createElement('div');
-          row.className = 'shop-item';
-          row.innerText = `${item.name}: $${item.price}`;
-          col.appendChild(row);
-        });
-
-        const total = document.createElement('div');
-        total.className = 'shop-total';
-        total.innerHTML = `<strong>Total: $${data[store].total}</strong>`;
-        col.appendChild(total);
-
-        columns.appendChild(col);
-      });
-
-      container.appendChild(columns);
-    }
-
-    if (shopData) {
-      renderResults(shopData);
-    } else {
-      container.innerHTML = "<p>No data to display.</p>";
-    }
-  </script>
+  <script src="shop-results.js"></script>
 </body>
 </html>
