@@ -1063,3 +1063,17 @@ body, html {
   box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   opacity: 0.6;
 }
+
+/* <-- SUGGESTIONS AREA --> */
+.suggestions {
+  padding: 1rem;
+  font-style: italic;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.2rem;
+  background-color: #5C757A;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  color: #E9E2D8;
+  text-align: center;
+  margin-top: 1rem;
+}
