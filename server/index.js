@@ -22,5 +22,7 @@ app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 app.use('/auth', require('./routes/auth'));
 
+app.use('/profile', require('./routes/profile'));
+
 const mealPlanRoutes = require('./routes/mealplan');
 app.use('/mealplan', mealPlanRoutes);

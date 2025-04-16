@@ -1,0 +1,113 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Profile</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Quicksand&display=swap" rel="stylesheet" />
+</head>
+<body class="main-body">
+  <header class="main-header">
+    <img src="images/logo.png" alt="Logo" class="main-logo" />
+    <h1 class="main-greeting">Welcome to Your Profile</h1>
+  </header>
+
+  <nav class="main-nav">
+    <div class="nav-container">
+      <ul>
+        <li><a href="main.html">Back to Dashboard</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <section class="main-left">
+      <!-- Preferred Stores -->
+      <div class="box box-profile">
+        <h2>Preferred Grocery Stores</h2>
+        <form id="store-form" class="profile-form">
+          <fieldset>
+            <legend>Select up to 3</legend>
+            <label><input type="checkbox" name="stores" value="Publix" /> Publix</label><br/>
+            <label><input type="checkbox" name="stores" value="Kroger" /> Kroger</label><br/>
+            <label><input type="checkbox" name="stores" value="Whole Foods" /> Whole Foods</label><br/>
+          </fieldset>
+          <button type="submit">Save Preferences</button>
+        </form>
+      </div>
+
+      <!-- Dietary Preferences -->
+      <div class="box box-profile">
+        <h2>Dietary Preferences</h2>
+        <form id="diet-form" class="profile-form">
+          <fieldset>
+            <legend>Choose any that apply</legend>
+            <label><input type="checkbox" name="diet" value="Vegetarian" /> Vegetarian</label><br/>
+            <label><input type="checkbox" name="diet" value="Vegan" /> Vegan</label><br/>
+            <label><input type="checkbox" name="diet" value="Gluten-Free" /> Gluten-Free</label><br/>
+            <label><input type="checkbox" name="diet" value="Dairy-Free" /> Dairy-Free</label><br/>
+            <label><input type="checkbox" name="diet" value="Halal" /> Halal</label><br/>
+            <label><input type="checkbox" name="diet" value="Kosher" /> Kosher</label><br/>
+          </fieldset>
+          <button type="submit">Save Preferences</button>
+        </form>
+      </div>
+
+      <!-- Location -->
+      <div class="box box-profile">
+        <h2>Your Location</h2>
+        <form id="location-form" class="profile-form">
+          <input type="text" id="location" placeholder="Enter your zip code or city" />
+          <button type="submit">Save Location</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("user"));
+    
+    // Load & save store prefs
+    const storeForm = document.getElementById("store-form");
+    const storeKey = `storePrefs_${user.username}`;
+    const savedStores = JSON.parse(localStorage.getItem(storeKey) || "[]");
+    storeForm.querySelectorAll('input[name="stores"]').forEach((input) => {
+      if (savedStores.includes(input.value)) input.checked = true;
+    });
+    storeForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const selected = Array.from(storeForm.querySelectorAll('input[name="stores"]:checked')).map(i => i.value);
+      localStorage.setItem(storeKey, JSON.stringify(selected));
+      alert("Store preferences saved!");
+    });
+
+    // Load & save diet prefs
+    const dietForm = document.getElementById("diet-form");
+    const dietKey = `dietPrefs_${user.username}`;
+    const savedDiets = JSON.parse(localStorage.getItem(dietKey) || "[]");
+    dietForm.querySelectorAll('input[name="diet"]').forEach((input) => {
+      if (savedDiets.includes(input.value)) input.checked = true;
+    });
+    dietForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const selected = Array.from(dietForm.querySelectorAll('input[name="diet"]:checked')).map(i => i.value);
+      localStorage.setItem(dietKey, JSON.stringify(selected));
+      alert("Dietary preferences saved!");
+    });
+
+    // Load & save location
+    const locationForm = document.getElementById("location-form");
+    const locationInput = document.getElementById("location");
+    const locationKey = `location_${user.username}`;
+    const savedLocation = localStorage.getItem(locationKey) || "";
+    locationInput.value = savedLocation;
+    locationForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      localStorage.setItem(locationKey, locationInput.value.trim());
+      alert("Location saved!");
+    });
+  </script>
+</body>
+</html>

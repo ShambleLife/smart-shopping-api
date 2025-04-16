@@ -19,7 +19,7 @@
       <li><a href="#">OLD LISTS</a></li>
       <li><a href="#">RECIPES</a></li>
       <li><a href="#">TEMPLATES</a></li>
-      <li><a href="#">PROFILE</a></li>
+      <li><a href="profile.html">PROFILE</a></li>
     </ul>
     <button id="logout-btn" class="logout-btn">LOGOUT</button>
     </div>
@@ -333,9 +333,16 @@ function renderMealPlanner(weekData) {
     });
 
     header.addEventListener('click', () => {
-      document.querySelectorAll('.meal-body').forEach(el => el.style.display = 'none');
-      body.style.display = body.style.display === 'flex' ? 'none' : 'flex';
-    });
+  const isOpen = body.style.display === 'flex';
+
+  document.querySelectorAll('.meal-body').forEach(el => {
+    el.style.display = 'none';
+  });
+
+  if (!isOpen) {
+    body.style.display = 'flex';
+  }
+});
 
     dayDiv.appendChild(header);
     dayDiv.appendChild(body);
