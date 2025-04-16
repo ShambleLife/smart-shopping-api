@@ -256,8 +256,11 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 
     async function fetchMealPlan() {
   const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user?.username || "guest";
+
   try {
-    const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/mealplan', {
+    const res = await fetch(`https://smart-shopping-api-1k1z.onrender.com/mealplan/${username}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
 
@@ -265,7 +268,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     return data.week || {};
   } catch (err) {
     console.error('Fetch failed:', err);
-    return {}; // fallback to render empty state
+    return {}; // fallback to empty planner
   }
 }
 
@@ -374,36 +377,39 @@ document.getElementById("shop-button").addEventListener("click", async () => {
   window.location.href = 'shop-results.html';
 });
 
-document.getElementById('shop-list-btn').addEventListener('click', async () => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  const token = localStorage.getItem('token');
-  const listKey = `groceryList_${user?.username}`;
-  const groceryList = JSON.parse(localStorage.getItem(listKey)) || [];
-  const preferredStores = JSON.parse(localStorage.getItem(`storePrefs_${user?.username}`)) || [];
+document.addEventListener('DOMContentLoaded', () => {
+  const shopBtn = document.getElementById('shop-list-btn');
+  if (shopBtn) {
+    shopBtn.addEventListener('click', async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = localStorage.getItem('token');
+      const listKey = `groceryList_${user?.username}`;
+      const groceryList = JSON.parse(localStorage.getItem(listKey)) || [];
+      const preferredStores = JSON.parse(localStorage.getItem(`storePrefs_${user?.username}`)) || [];
 
-  if (!groceryList.length || !preferredStores.length) {
-    alert("Make sure you have a list and preferred stores selected.");
-    return;
-  }
+      if (!groceryList.length || !preferredStores.length) {
+        alert("Make sure you have a list and preferred stores selected.");
+        return;
+      }
 
-  try {
-    const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ list: groceryList, stores: preferredStores })
+      try {
+        const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({ list: groceryList, stores: preferredStores })
+        });
+
+        const result = await res.json();
+        console.log('Price comparison:', result);
+        alert("Check the console for mock price comparison results!");
+      } catch (err) {
+        console.error("Shop error:", err);
+        alert("Something went wrong with the comparison.");
+      }
     });
-
-    const result = await res.json();
-    console.log('Price comparison:', result);
-    // You can redirect or populate a new results section here later.
-    alert("Check the console for price comparison results (mock data for now).");
-
-  } catch (err) {
-    console.error("Shop error:", err);
-    alert("Something went wrong with the comparison.");
   }
 });
   </script>
