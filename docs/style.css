@@ -461,13 +461,34 @@ body, html {
   margin-top: 0;
 }
 
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
 .main-nav ul {
   display: flex;
   justify-content: center;
+  flex: 1;
   gap: 2rem;
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #E9E2D8;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
 }
 
 .main-nav a {
@@ -478,6 +499,12 @@ body, html {
 }
 
 .main-nav a:hover {
+  text-decoration: underline;
+}
+
+
+
+.logout-btn:hover {
   text-decoration: underline;
 }
 /* #endregion */
@@ -515,7 +542,9 @@ body, html {
 
 .box-b1 {
   min-height: 320px;
-  transition: height 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-color: #C7CDBF;
 }
 
@@ -531,6 +560,18 @@ body, html {
   gap: 1.5rem;
   flex-wrap: nowrap;
   margin-bottom: 1rem;
+  flex: 1;
+  min-height: 250px;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 320px;
 }
 
 .list-column {
@@ -622,8 +663,15 @@ body, html {
 }
 
 .empty-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #5C757A;
+  font-family: 'Quicksand', sans-serif;
   text-align: center;
-  color: #aaa;
+  font-size: 22px;
+  gap: 1rem;
 }
 
 .empty-list img {
@@ -666,15 +714,23 @@ body, html {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: #5C757A;
+}
+
+.box-b3 h2 {
+  font-family: 'Bree Serif', serif;
+  font-size: 2rem;
+  color: #E9E2D8;
+  margin-bottom: 0.75rem;
 }
 
 .b3-feedback {
   text-align: center;
   font-weight: bold;
-  color: #5C757A;
+  color: #E9E2D8;
   font-size: 1rem;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.2s ease;
   margin-top: 0.5rem;
 }
 

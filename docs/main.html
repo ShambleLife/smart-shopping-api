@@ -10,16 +10,19 @@
 <body class="main-body">
   <header class="main-header">
     <img src="images/logo.png" alt="Logo" class="main-logo" />
-    <h1 class="main-greeting">Happy Shopping, <span id="user-name">Friend</span>!</h1>
+    <h1 class="main-greeting">Happy Shopping, <span id="user-name">Friend!</span>!</h1>
   </header>
 
   <nav class="main-nav">
+    <div class="nav-container">
     <ul>
-      <li><a href="#">Old Lists</a></li>
-      <li><a href="#">Recipes</a></li>
-      <li><a href="#">Templates</a></li>
-      <li><a href="#">Profile</a></li>
+      <li><a href="#">OLD LISTS</a></li>
+      <li><a href="#">RECIPES</a></li>
+      <li><a href="#">TEMPLATES</a></li>
+      <li><a href="#">PROFILE</a></li>
     </ul>
+    <button id="logout-btn" class="logout-btn">LOGOUT</button>
+    </div>
   </nav>
 
   <main class="main-content">
@@ -29,11 +32,6 @@
       <div class="box box-b1">
         <h2>Current List</h2>
         <div class="list-columns" id="grocery-list">
-          <!-- If empty -->
-          <div class="empty-list">
-            <p>Empty List</p>
-            <img src="images/empty.png" alt="Empty" />
-          </div>
         </div>
         <form id="addItemForm" class="add-item-form">
           <input type="text" id="item-name" placeholder="Item" maxlength "25" required />
@@ -59,7 +57,7 @@
     <!-- Right side: 25% -->
     <aside class="main-right">
         <div class="box box-b3">
-            <h2>B3</h2>
+            <h2>Quick Add</h2>
             <div id="b3-feedback" class="b3-feedback"></div> 
             <form id="addItemFormB3" class="add-item-form">
               <input type="text" id="item-name-b3" placeholder="Item" />
@@ -108,10 +106,13 @@
   
       if (list.length === 0) {
         listContainer.innerHTML = `
-          <div class="empty-list">
-            <p>Empty List</p>
-            <img src="images/empty.png" alt="Empty" />
-          </div>`;
+            <div class="empty-wrapper">
+                <div class="empty-list">
+                    <p>YOUR LIST IS EMPTY!<br>BETTER START SHOPPING!</p>
+                    <img src="images/cat3.png" alt="Empty" />
+                </div>
+            </div>
+`;
         return;
       }
   
@@ -213,7 +214,10 @@ addItemFormB3.addEventListener('submit', (e) => {
     feedback.classList.remove('visible');
   }, 1500);
 });
-  
+document.getElementById("logout-btn").addEventListener("click", () => {
+  localStorage.clear(); 
+  window.location.href = "login.html";
+});
     // Initialize on page load
     renderList();
   </script>
