@@ -34,7 +34,7 @@
         <div class="list-columns" id="grocery-list">
         </div>
         <form id="addItemForm" class="add-item-form">
-          <input type="text" id="item-name" placeholder="Item" maxlength "25" required />
+          <input type="text" id="item-name" placeholder="Item" maxlength="25" required />
           <input type="number" id="item-qty" placeholder="Qty" min="1" />
           <button type="submit">Add</button>
         </form>
@@ -78,10 +78,18 @@
 
   <script>
     // Grab user's first name from storage
-    const userData = JSON.parse(localStorage.getItem("user"));
-    if (userData && userData.firstName) {
-      document.getElementById("user-name").textContent = userData.firstName;
-    }
+    let userData = null;
+try {
+  const raw = localStorage.getItem("user");
+  if (raw && raw !== "undefined") {
+    userData = JSON.parse(raw);
+  }
+} catch (e) {
+  console.error("Failed to parse user from localStorage:", e);
+}
+if (userData && userData.firstName) {
+  document.getElementById("user-name").textContent = userData.firstName;
+}
   </script>
 </body>
 </html>
@@ -92,16 +100,31 @@
     const itemNameInput = document.getElementById('item-name');
     const itemQtyInput = document.getElementById('item-qty');
   
+    function getCurrentUser() {
+  try {
+    const rawUser = localStorage.getItem('user');
+    if (!rawUser || rawUser === 'undefined') return 'guest'; // avoid JSON.parse crash
+    const user = JSON.parse(rawUser);
+    return user?.username || 'guest';
+  } catch (e) {
+    console.error('Failed to parse user:', e);
+    return 'guest';
+  }
+}
+
     function getList() {
-      return JSON.parse(localStorage.getItem('groceryList')) || [];
+        const key = `groceryList_${getCurrentUser()}`;
+        return JSON.parse(localStorage.getItem(key)) || [];
     }
-  
+
     function saveList(list) {
-      localStorage.setItem('groceryList', JSON.stringify(list));
+        const key = `groceryList_${getCurrentUser()}`;
+        localStorage.setItem(key, JSON.stringify(list));
     }
   
     function renderList() {
       const list = getList();
+      console.log("Rendering list for: ", getCurrentUser());
       listContainer.innerHTML = '';
   
       if (list.length === 0) {
@@ -163,11 +186,11 @@ listContainer.appendChild(col3);
          } else {
             list[index].qty = Math.min(newQty, 99); // max of 99
         }
-
+        console.log("Saving for:", getCurrentUser());
         saveList(list);
         renderList();
     }
-  
+    console.log("Current user:", getCurrentUser());
     addItemForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const name = itemNameInput.value.trim();
@@ -215,7 +238,8 @@ addItemFormB3.addEventListener('submit', (e) => {
   }, 1500);
 });
 document.getElementById("logout-btn").addEventListener("click", () => {
-  localStorage.clear(); 
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
   window.location.href = "login.html";
 });
     // Initialize on page load

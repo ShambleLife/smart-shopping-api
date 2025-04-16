@@ -53,8 +53,11 @@
 
         if (res.ok) {
           localStorage.setItem('token', data.token);
-          alert("Login successful!");
-          window.location.href = 'main.html'; // Change to your actual main/dashboard page
+          localStorage.setItem('user', JSON.stringify(data.user));
+
+          console.log("User saved:", data.user);
+
+        window.location.href = 'main.html';
         } else {
           alert("Error: " + data.error);
         }
