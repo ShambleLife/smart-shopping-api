@@ -293,6 +293,7 @@ const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sat
 const plannerContainer = document.getElementById('meal-planner');
 
 function renderMealPlanner(weekData) {
+  const plannerContainer = document.getElementById('meal-planner');
   plannerContainer.innerHTML = '';
 
   daysOfWeek.forEach(day => {
@@ -303,38 +304,37 @@ function renderMealPlanner(weekData) {
 
     const header = document.createElement('div');
     header.className = 'meal-header';
-
-    const title = document.createElement('span');
-    title.textContent = day;
-
-    const toggle = document.createElement('span');
-    toggle.className = 'meal-toggle';
-    toggle.textContent = '+';
-
-    header.appendChild(title);
-    header.appendChild(toggle);
+    header.innerHTML = `${day} <span class="expand-btn">+</span>`;
 
     const body = document.createElement('div');
     body.className = 'meal-body';
 
-    const list = document.createElement('ul');
+    meals.forEach((meal, index) => {
+      const line = document.createElement('div');
+      line.className = 'meal-line';
 
-    meals.forEach((meal, i) => {
-      const li = document.createElement('li');
-      li.textContent = meal || ""; // shows underline only
-      list.appendChild(li);
+      const bullet = document.createElement('span');
+      bullet.textContent = '•';
+
+      const underline = document.createElement('input');
+      underline.type = 'text';
+      underline.value = meal;
+      underline.placeholder = '';
+      underline.className = 'meal-input';
+
+      underline.addEventListener('change', () => {
+        weekData[day][index] = underline.value;
+        saveMealPlan(weekData);
+      });
+
+      line.appendChild(bullet);
+      line.appendChild(underline);
+      body.appendChild(line);
     });
 
-    body.appendChild(list);
     header.addEventListener('click', () => {
-      const isOpen = body.style.display === 'block';
-      document.querySelectorAll('.meal-body').forEach(b => b.style.display = 'none');
-      document.querySelectorAll('.meal-toggle').forEach(t => t.textContent = '+');
-
-      if (!isOpen) {
-        body.style.display = 'block';
-        toggle.textContent = '–';
-      }
+      document.querySelectorAll('.meal-body').forEach(el => el.style.display = 'none');
+      body.style.display = body.style.display === 'flex' ? 'none' : 'flex';
     });
 
     dayDiv.appendChild(header);
