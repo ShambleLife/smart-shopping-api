@@ -426,27 +426,31 @@ body, html {
   font-family: 'Quicksand', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f9f9f9;
+  background-color: #E9E2DB;
 }
 
 /* HEADER */
 /* #region Main Page Header Styles */
 .main-header {
   text-align: center;
-  padding: 1.5rem 1rem 0;
+  padding: 0.25rem 1rem 0;
+  padding-bottom: 0;
+  background-color: #C7CDBF;
 }
 
 .main-logo {
   max-width: 120px;
   height: auto;
-  margin-bottom: 1rem;
+  margin-bottom: .5rem;
 }
 
 .main-greeting {
-  font-size: 2rem;
-  font-family: 'Bree Serif', serif;
-  margin-bottom: 1rem;
-  color: #333;
+  font-size: 3.5rem;
+  font-family: 'Quicksand', sans-serif;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin: 0;
+  color: #5C757A;
 }
 
 /* MENU */
@@ -454,6 +458,7 @@ body, html {
 .main-nav {
   background-color: #757f64;
   padding: 0.5rem 0;
+  margin-top: 0;
 }
 
 .main-nav ul {
@@ -466,9 +471,9 @@ body, html {
 }
 
 .main-nav a {
-  color: white;
+  color: #E9E2D8;
+  font-family: 'Quicksand', sans-serif;
   text-decoration: none;
-  font-weight: bold;
   font-size: 1rem;
 }
 
@@ -511,6 +516,14 @@ body, html {
 .box-b1 {
   min-height: 320px;
   transition: height 0.3s ease;
+  background-color: #C7CDBF;
+}
+
+.box-b1 h2 {
+  font-family: 'Bree Serif', serif;
+  font-size: 2rem;
+  color: #5C757A;
+  margin-bottom: 0.75rem;
 }
 
 .list-columns {
@@ -535,6 +548,7 @@ body, html {
   border: 1px solid #ddd;
   border-radius: 8px;
   margin-bottom: 0.25rem;
+  background-color: #E9E2D8;
 
 }
 
@@ -583,7 +597,17 @@ body, html {
 }
 
 .add-item-form input {
+  background-color: #E9E2D8;
+  border: 1px solid #ddd;
+  color: #000000;
+  font-size: 15px;
   flex: 1 1 120px;
+}
+
+.add-item-form input::placeholder {
+  color: #757F64;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 15px;
 }
 
 .add-item-form button {
@@ -671,8 +695,6 @@ body, html {
 .box h2, .box h3 {
   margin-top: 0;
   font-family: 'Bree Serif', serif;
-  font-size: 1.3rem;
-  color: #444;
   text-align: center;
 }
 /* #endregion */
