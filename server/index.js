@@ -21,3 +21,6 @@ app.use('/items', require('./routes/items'));
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 app.use('/auth', require('./routes/auth'));
+
+const mealPlanRoutes = require('./routes/mealplan');
+app.use('/mealplan', mealPlanRoutes);

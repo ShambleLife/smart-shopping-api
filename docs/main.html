@@ -66,9 +66,12 @@
             </form>
           </div>
 
-      <div class="box box-b4">
-        <h2>B4</h2>
-      </div>
+          <div class="box box-b4">
+            <h2>Weekly Meal Planner</h2>
+            <div id="meal-planner">
+              <!-- Days will be injected here dynamically -->
+            </div>
+          </div>
 
       <div class="box box-b5">
         <h2>B5</h2>
@@ -244,4 +247,75 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
     // Initialize on page load
     renderList();
+
+    //Meal Planning Logic
+
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const plannerContainer = document.getElementById('meal-planner');
+
+async function fetchMealPlan() {
+  const token = localStorage.getItem("token");
+  const username = userData.username; // Ensure userData is defined and contains username
+  const res = await fetch(`https://smart-shopping-api-1k1z.onrender.com/mealplan/${username}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const data = await res.json();
+  return data.week || {};
+}
+
+async function saveMealPlan(updatedWeek) {
+  const token = localStorage.getItem("token");
+  const user = JSON.parse(localStorage.getItem("user"));
+  const username = user?.username || "guest";
+
+  await fetch(`https://smart-shopping-api-1k1z.onrender.com/mealplan/${username}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({ week: updatedWeek })
+  });
+}
+
+function renderMealPlanner(weekData) {
+  plannerContainer.innerHTML = '';
+
+  daysOfWeek.forEach(day => {
+    const meals = weekData[day] || ["", "", "", ""];
+
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'meal-day';
+
+    const header = document.createElement('div');
+    header.className = 'meal-header';
+    header.textContent = day;
+
+    const body = document.createElement('div');
+    body.className = 'meal-body';
+
+    meals.forEach((meal, index) => {
+      const input = document.createElement('textarea');
+      input.rows = 1;
+      input.value = meal;
+      input.addEventListener('change', () => {
+        weekData[day][index] = input.value;
+        saveMealPlan(weekData);
+      });
+      body.appendChild(input);
+    });
+
+    header.addEventListener('click', () => {
+      document.querySelectorAll('.meal-body').forEach(el => el.style.display = 'none');
+      body.style.display = body.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    dayDiv.appendChild(header);
+    dayDiv.appendChild(body);
+    plannerContainer.appendChild(dayDiv);
+  });
+}
+
+// Initialize
+fetchMealPlan().then(renderMealPlanner);
   </script>
