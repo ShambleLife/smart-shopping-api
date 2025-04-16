@@ -1,4 +1,5 @@
 /* GENERAL RESET AND BASE */
+/* #region Landing Page Styles */
 body, html {
   margin: 0;
   padding: 0;
@@ -216,6 +217,7 @@ body, html {
   color: #CB7A5C;
   font-weight: bold;
 }
+/* #endregion */
 
 /* <-- REGISTRATION PAGE -->  */
 /* #region Registration Styles */
@@ -414,5 +416,263 @@ body, html {
 .register-prompt a {
   color: #5C757A;
   text-decoration: underline;
+}
+/* #endregion */
+
+/* <-- MAIN PAGE --> */
+/* #region Main Page Styles */
+
+.main-body {
+  font-family: 'Quicksand', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+}
+
+/* HEADER */
+/* #region Main Page Header Styles */
+.main-header {
+  text-align: center;
+  padding: 1.5rem 1rem 0;
+}
+
+.main-logo {
+  max-width: 120px;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.main-greeting {
+  font-size: 2rem;
+  font-family: 'Bree Serif', serif;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+/* MENU */
+
+.main-nav {
+  background-color: #757f64;
+  padding: 0.5rem 0;
+}
+
+.main-nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.main-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.main-nav a:hover {
+  text-decoration: underline;
+}
+/* #endregion */
+
+/* BODY */
+/* #region Main Page Main Body Styles */
+.main-content {
+  display: flex;
+  gap: 1rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main-left {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.main-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.box {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.box-b1 {
+  min-height: 320px;
+  transition: height 0.3s ease;
+}
+
+.list-columns {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: nowrap;
+  margin-bottom: 1rem;
+}
+
+.list-column {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-columns .item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 0.25rem;
+
+}
+
+.qty-block {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-grow: 1;
+}
+
+.qty-label {
+  font-weight: bold;
+  min-width: 20px;
+  text-align: right;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: #ccc;
+}
+
+.item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qty-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.add-item-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.add-item-form input,
+.add-item-form button {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.add-item-form input {
+  flex: 1 1 120px;
+}
+
+.add-item-form button {
+  background-color: #757f64;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.add-item-form button:hover {
+  background-color: #5f6850;
+}
+
+.empty-list {
+  text-align: center;
+  color: #aaa;
+}
+
+.empty-list img {
+  max-width: 150px;
+  opacity: 0.5;
+}
+
+.suggestions {
+  padding: 1rem;
+  font-style: italic;
+  background-color: #eef0e6;
+  border-radius: 8px;
+}
+/* #endregion */
+/* #region Main Page Other Box & Box Header Styles */
+.box-b2 {
+  display: flex;
+  height: 150px; /* fixed height */
+}
+
+.box-b2-left {
+  width: 15%;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.box-b2-right {
+  width: 85%;
+  background-color: #f0f0f0;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.box-b3 {
+  height: 180px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.b3-feedback {
+  text-align: center;
+  font-weight: bold;
+  color: #5C757A;
+  font-size: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.b3-feedback.visible {
+  opacity: 1;
+}
+
+.box-b4 {
+  height: 150px; /* match height of B2 */
+  background-color: #f7f7f7;
+}
+
+.box-b5 {
+  height: 150px; /* also match B2 */
+  background-color: #e6e6e6;
+}
+
+.box h2, .box h3 {
+  margin-top: 0;
+  font-family: 'Bree Serif', serif;
+  font-size: 1.3rem;
+  color: #444;
+  text-align: center;
 }
 /* #endregion */

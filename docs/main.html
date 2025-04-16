@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baskit Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bree+Serif&family=Quicksand&display=swap" rel="stylesheet" />
+</head>
+<body class="main-body">
+  <header class="main-header">
+    <img src="images/logo.png" alt="Logo" class="main-logo" />
+    <h1 class="main-greeting">Happy Shopping, <span id="user-name">Friend</span>!</h1>
+  </header>
+
+  <nav class="main-nav">
+    <ul>
+      <li><a href="#">Old Lists</a></li>
+      <li><a href="#">Recipes</a></li>
+      <li><a href="#">Templates</a></li>
+      <li><a href="#">Profile</a></li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <!-- Left side: 75% -->
+    <section class="main-left">
+      <!-- B1 -->
+      <div class="box box-b1">
+        <h2>Box 1</h2>
+        <div class="list-columns" id="grocery-list">
+          <!-- If empty -->
+          <div class="empty-list">
+            <p>Empty List</p>
+            <img src="images/empty.png" alt="Empty" />
+          </div>
+        </div>
+        <form id="addItemForm" class="add-item-form">
+          <input type="text" id="item-name" placeholder="Item" maxlength "25" required />
+          <input type="number" id="item-qty" placeholder="Qty" min="1" />
+          <button type="submit">Add</button>
+        </form>
+      </div>
+
+      <!-- Suggestions -->
+      <div class="suggestions">Here's where your suggestions will go. Lorem ipsum and nonsense for now.</div>
+
+      <!-- B2 -->
+      <div class="box box-b2">
+        <div class="box-b2-left">
+          <h3>B2</h3>
+        </div>
+        <div class="box-b2-right">
+          <!-- Blank for now -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Right side: 25% -->
+    <aside class="main-right">
+        <div class="box box-b3">
+            <h2>B3</h2>
+            <div id="b3-feedback" class="b3-feedback"></div> 
+            <form id="addItemFormB3" class="add-item-form">
+              <input type="text" id="item-name-b3" placeholder="Item" />
+              <input type="number" id="item-qty-b3" placeholder="Qty" min="1" />
+              <button type="submit">Add</button>
+            </form>
+          </div>
+
+      <div class="box box-b4">
+        <h2>B4</h2>
+      </div>
+
+      <div class="box box-b5">
+        <h2>B5</h2>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    // Grab user's first name from storage
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData && userData.firstName) {
+      document.getElementById("user-name").textContent = userData.firstName;
+    }
+  </script>
+</body>
+</html>
+
+<script>
+    const listContainer = document.getElementById('grocery-list');
+    const addItemForm = document.getElementById('addItemForm');
+    const itemNameInput = document.getElementById('item-name');
+    const itemQtyInput = document.getElementById('item-qty');
+  
+    function getList() {
+      return JSON.parse(localStorage.getItem('groceryList')) || [];
+    }
+  
+    function saveList(list) {
+      localStorage.setItem('groceryList', JSON.stringify(list));
+    }
+  
+    function renderList() {
+      const list = getList();
+      listContainer.innerHTML = '';
+  
+      if (list.length === 0) {
+        listContainer.innerHTML = `
+          <div class="empty-list">
+            <p>Empty List</p>
+            <img src="images/empty.png" alt="Empty" />
+          </div>`;
+        return;
+      }
+  
+      const col1 = document.createElement('div');
+const col2 = document.createElement('div');
+const col3 = document.createElement('div');
+col1.classList.add('list-column');
+col2.classList.add('list-column');
+col3.classList.add('list-column');
+
+list.forEach((item, index) => {
+  const itemDiv = document.createElement('div');
+  itemDiv.className = 'item';
+
+  itemDiv.innerHTML = `
+  <div class="qty-block">
+    <span class="qty-label">${item.qty > 1 ? item.qty : ''}</span>
+    <div class="divider"></div>
+    <span class="item-name" title="${item.name}">${item.name}</span>
+  </div>
+  <div class="qty-controls">
+    <button onclick="changeQty(${index}, -1)">−</button>
+    <button onclick="changeQty(${index}, 1)">+</button>
+  </div>
+`;
+
+  if (index % 3 === 0) {
+    col1.appendChild(itemDiv);
+  } else if (index % 3 === 1) {
+    col2.appendChild(itemDiv);
+  } else {
+    col3.appendChild(itemDiv);
+  }
+});
+
+listContainer.appendChild(col1);
+listContainer.appendChild(col2);
+listContainer.appendChild(col3);
+    }
+  
+    function changeQty(index, change) {
+        const list = getList();
+        const currentQty = list[index].qty || 1;
+        const newQty = currentQty + change;
+
+        if (newQty < 1) {
+            list.splice(index, 1); 
+         } else {
+            list[index].qty = Math.min(newQty, 99); // max of 99
+        }
+
+        saveList(list);
+        renderList();
+    }
+  
+    addItemForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = itemNameInput.value.trim();
+      let qty = parseInt(itemQtyInput.value.trim(), 10);
+      if (!name) return;
+  
+      if (isNaN(qty) || qty < 1) qty = 1;
+  
+      const list = getList();
+      list.push({ name, qty });
+      saveList(list);
+  
+      itemNameInput.value = '';
+      itemQtyInput.value = '';
+      renderList();
+    });
+
+    const addItemFormB3 = document.getElementById('addItemFormB3');
+const itemNameInputB3 = document.getElementById('item-name-b3');
+const itemQtyInputB3 = document.getElementById('item-qty-b3');
+
+addItemFormB3.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const name = itemNameInputB3.value.trim();
+  let qty = parseInt(itemQtyInputB3.value.trim(), 10);
+  if (!name) return;
+
+  if (isNaN(qty) || qty < 1) qty = 1;
+
+  const list = getList();
+  list.push({ name, qty });
+  saveList(list);
+
+  itemNameInputB3.value = '';
+  itemQtyInputB3.value = '';
+  renderList();
+
+  const feedback = document.getElementById('b3-feedback');
+  feedback.textContent = 'Added!';
+  feedback.classList.add('visible');
+
+  setTimeout(() => {
+    feedback.textContent = '';
+    feedback.classList.remove('visible');
+  }, 1500);
+});
+  
+    // Initialize on page load
+    renderList();
+  </script>
