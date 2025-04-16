@@ -33,6 +33,9 @@
         <h2>Current List</h2>
         <div class="list-columns" id="grocery-list">
         </div>
+        <div class="shop-list-container">
+            <button id="shop-button">Shop Your List</button>
+          </div>
         <form id="addItemForm" class="add-item-form">
           <input type="text" id="item-name" placeholder="Item" maxlength="25" required />
           <input type="number" id="item-qty" placeholder="Qty" min="1" />
@@ -352,4 +355,55 @@ function renderMealPlanner(weekData) {
 
 // Initialize
 fetchMealPlan().then(renderMealPlanner);
+
+document.getElementById("shop-button").addEventListener("click", async () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const key = `groceryList_${user.username}`;
+  const list = JSON.parse(localStorage.getItem(key)) || [];
+
+  const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ list })
+  });
+
+  const data = await res.json();
+  localStorage.setItem('shopResults', JSON.stringify(data));
+  window.location.href = 'shop-results.html';
+});
+
+document.getElementById('shop-list-btn').addEventListener('click', async () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  const token = localStorage.getItem('token');
+  const listKey = `groceryList_${user?.username}`;
+  const groceryList = JSON.parse(localStorage.getItem(listKey)) || [];
+  const preferredStores = JSON.parse(localStorage.getItem(`storePrefs_${user?.username}`)) || [];
+
+  if (!groceryList.length || !preferredStores.length) {
+    alert("Make sure you have a list and preferred stores selected.");
+    return;
+  }
+
+  try {
+    const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ list: groceryList, stores: preferredStores })
+    });
+
+    const result = await res.json();
+    console.log('Price comparison:', result);
+    // You can redirect or populate a new results section here later.
+    alert("Check the console for price comparison results (mock data for now).");
+
+  } catch (err) {
+    console.error("Shop error:", err);
+    alert("Something went wrong with the comparison.");
+  }
+});
   </script>

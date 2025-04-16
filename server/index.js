@@ -26,3 +26,6 @@ app.use('/profile', require('./routes/profile'));
 
 const mealPlanRoutes = require('./routes/mealplan');
 app.use('/mealplan', mealPlanRoutes);
+
+const shopRoute = require('./routes/shop');
+app.use('/shop', shopRoute);

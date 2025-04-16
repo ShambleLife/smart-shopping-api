@@ -685,6 +685,27 @@ body, html {
   background-color: #eef0e6;
   border-radius: 8px;
 }
+
+.shop-list-container {
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+#shop-button {
+  padding: 0.75rem 1.5rem;
+  background-color: #CB7A5C;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+}
+
+#shop-button:hover {
+  background-color: #b9664a;
+}
 /* #endregion */
 /* #region Main Page Other Box & Box Header Styles */
 .box-b2 {
