@@ -359,39 +359,37 @@ function renderMealPlanner(weekData) {
 // Initialize
 fetchMealPlan().then(renderMealPlanner);
 
+
 document.getElementById("shop-button").addEventListener("click", async () => {
-  const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user"));
-  const username = user?.username;
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
+  const username = user?.username || 'guest';
 
   const storePrefs = JSON.parse(localStorage.getItem(`storePrefs_${username}`) || "[]");
   const list = JSON.parse(localStorage.getItem(`groceryList_${username}`) || "[]");
 
-  console.log("Sending to shop route:", {
-    stores: storePrefs,
-    items: list
-  });
+  if (!storePrefs.length || !list.length) {
+    alert("You must have selected grocery stores and items in your list.");
+    return;
+  }
 
   try {
-    const res = await fetch("https://smart-shopping-api-1k1z.onrender.com/shop", {
-      method: "POST",
+    const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
       },
       body: JSON.stringify({ stores: storePrefs, items: list })
     });
 
     const data = await res.json();
-    console.log("Shop route response:", data);
-
-    // For now, just store in localStorage for future use
-    localStorage.setItem("shopResults", JSON.stringify(data));
-
-    // Redirect to a result page later if desired
-    // window.location.href = "shop-results.html";
+    localStorage.setItem('shopResults', JSON.stringify(data));
+    window.location.href = 'shop-results.html';
   } catch (err) {
     console.error("Error hitting shop route:", err);
+    alert("Something went wrong while trying to shop your list.");
   }
 });
+
   </script>
