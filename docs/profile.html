@@ -90,12 +90,32 @@
     dietForm.querySelectorAll('input[name="diet"]').forEach((input) => {
       if (savedDiets.includes(input.value)) input.checked = true;
     });
-    dietForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const selected = Array.from(dietForm.querySelectorAll('input[name="diet"]:checked')).map(i => i.value);
-      localStorage.setItem(dietKey, JSON.stringify(selected));
-      alert("Dietary preferences saved!");
+    dietForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const selected = Array.from(dietForm.querySelectorAll('input[name="diet"]:checked')).map(i => i.value);
+  const token = localStorage.getItem("token");
+
+  localStorage.setItem(dietKey, JSON.stringify(selected));
+  localStorage.setItem("dietaryPreference", JSON.stringify(selected)); // NEW: for search filtering
+
+  try {
+    const res = await fetch("https://smart-shopping-api-1k1z.onrender.com/profile", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({ dietaryPreferences: selected })
     });
+
+    if (!res.ok) throw new Error("Failed to update profile");
+
+    alert("Dietary preferences saved!");
+  } catch (err) {
+    console.error(err);
+    alert("Problem saving to backend.");
+  }
+});
 
     // Load & save location
     const locationForm = document.getElementById("location-form");
