@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   preferredStores: [String],
   location: String,
-  dietaryPreferences: String
+  dietaryPreferences: [String],
 });
 
 module.exports = mongoose.model('User', userSchema);
