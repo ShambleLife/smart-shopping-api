@@ -400,7 +400,7 @@ fetchMealPlan().then(renderMealPlanner);
 
 document.getElementById("shop-button").addEventListener("click", async () => {
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('loggedInUser')) || { username: 'guest' };
   const username = user?.username || 'guest';
 
   const storePrefs = JSON.parse(localStorage.getItem(`storePrefs_${username}`) || "[]");
