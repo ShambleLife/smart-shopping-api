@@ -20,9 +20,12 @@
   </main>
 
   <script>
+    const params = new URLSearchParams(window.location.search);
+const query = params.get('q');
+const unfiltered = params.get('nofilter') === 'true';
     const preference = JSON.parse(localStorage.getItem("dietaryPreference")) || [];
 
-const unfiltered = params.get('nofilter') === 'true';
+
 
 function maybeShowDietaryBanner() {
   const banner = document.getElementById("dietaryBanner");
@@ -114,8 +117,7 @@ function saveRecipe(recipe) {
 }
 
 // Extract query string from URL
-const params = new URLSearchParams(window.location.search);
-const query = params.get('q');
+
 
 if (query) {
   fetchRecipes(query).then(displayRecipes);
