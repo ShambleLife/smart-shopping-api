@@ -1,7 +1,17 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const groceryList = ["Banana", "Milk"]; // You can replace this with a real list from localStorage later
+  const groceryList = JSON.parse(localStorage.getItem("groceryList_guest")) || [];
 
-  // Fetch data from each "store"
+  if (groceryList.length === 0) {
+    alert("You must have selected grocery items on your list.");
+    window.location.href = "main.html";
+    return;
+  }
+
+  // Normalize product names in the list
+  const normalizedList = groceryList.map(item =>
+    item.name?.toLowerCase?.().trim?.() || item.toLowerCase?.().trim?.()
+  );
+
   const [krogerData, publixData, wholefoodsData] = await Promise.all([
     fetch("https://simple-grocery-store-api.glitch.me/products").then(res => res.json()),
     fetch("publix.json").then(res => res.json()),
@@ -12,13 +22,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     const breakdown = [];
     let total = 0;
 
-    groceryList.forEach(itemName => {
-      const item = storeItems.find(p => p.name.toLowerCase() === itemName.toLowerCase());
-      if (item) {
-        breakdown.push({ name: item.name, price: item.price });
-        total += item.price;
+    normalizedList.forEach(name => {
+      const match = storeItems.find(p => p.name?.toLowerCase?.().trim?.() === name);
+      if (match) {
+        breakdown.push({ name: match.name, price: match.price });
+        total += match.price;
       } else {
-        breakdown.push({ name: itemName, price: 0 }); // Or mark as not found
+        breakdown.push({ name, price: 0 });
       }
     });
 
@@ -30,8 +40,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     "Kroger": buildStoreBreakdown(krogerData),
     "Whole Foods": buildStoreBreakdown(wholefoodsData)
   };
-
-  localStorage.setItem("shopResults", JSON.stringify(stores));
 
   function renderStore(storeKey, columnId) {
     const column = document.getElementById(columnId);
