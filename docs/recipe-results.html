@@ -156,6 +156,7 @@ function saveRecipe(recipe) {
 
 
 if (query) {
+    maybeShowDietaryBanner();
   fetchRecipes(query).then(displayRecipes);
 } else {
   document.getElementById('recipeResults').innerHTML = '<p>No search term provided.</p>';
