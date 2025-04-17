@@ -287,6 +287,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     // Initialize on page load
     renderList();
     loadAllRecipesWithFilters('A–G');
+    renderSuggestions();
 
     //Meal Planning Logic
 
@@ -411,6 +412,20 @@ document.getElementById("shop-button").addEventListener("click", async () => {
   }
 
   try {
+    // List to local
+    const now = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
+    const historyKey = `purchaseHistory_${username}`;
+    const history = JSON.parse(localStorage.getItem(historyKey) || "{}");
+
+    list.forEach(item => {
+      const itemName = item.name.toLowerCase();
+      if (!history[itemName]) history[itemName] = [];
+      history[itemName].push(now);
+    });
+
+    localStorage.setItem(historyKey, JSON.stringify(history));
+
+    //API Request
     const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
       method: 'POST',
       headers: {
@@ -428,6 +443,7 @@ document.getElementById("shop-button").addEventListener("click", async () => {
     alert("Something went wrong while trying to shop your list.");
   }
 });
+
 
 function redirectToRecipeResults() {
   const query = document.getElementById('recipeSearch').value.trim();
@@ -563,4 +579,31 @@ function openRecipeModal(recipe) {
 document.getElementById('closeModal').addEventListener('click', () => {
   document.getElementById('recipeModal').style.display = 'none';
 });
+//Suggestion logic
+function renderSuggestions() {
+  const user = getCurrentUser();
+  const history = JSON.parse(localStorage.getItem(`purchaseHistory_${user}`) || "{}");
+  const today = new Date();
+  const suggestions = [];
+
+  for (let item in history) {
+    const dates = history[item].map(d => new Date(d)).sort((a, b) => a - b);
+    const lastPurchase = dates[dates.length - 1];
+    const daysSince = Math.floor((today - lastPurchase) / (1000 * 60 * 60 * 24));
+    const frequency = dates.length;
+
+    // Heuristic: Bought 3+ times, last bought 7+ days ago = Suggest!
+    if (frequency >= 3 && daysSince >= 7) {
+      suggestions.push(`${item} (bought ${frequency} times, last seen ${daysSince} days ago)`);
+    }
+  }
+
+  const box = document.querySelector(".suggestions");
+  if (suggestions.length) {
+    box.innerHTML = `<strong>Need a refill?</strong><ul>${suggestions.map(i => `<li>${i}</li>`).join('')}</ul>`;
+  } else {
+    box.innerHTML = `No suggestions yet! Once you start shopping regularly, we'll learn your snacky secrets.`;
+  }
+}
+
   </script>
