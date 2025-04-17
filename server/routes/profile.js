@@ -4,20 +4,21 @@ const User = require('../models/User');
 const authMiddleware = require('../middleware/auth');
 
 // Get user profile
+// routes/profile.js (updated version)
+
 router.get('/', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select('-password');
+    const user = await User.findById(req.userId).select('-password');
     res.json(user);
   } catch {
     res.status(500).json({ error: 'Failed to load profile' });
   }
 });
 
-// Update profile
 router.post('/', authMiddleware, async (req, res) => {
   try {
     const updated = await User.findByIdAndUpdate(
-      req.user.userId,
+      req.userId,
       { $set: req.body },
       { new: true }
     );
