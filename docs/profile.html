@@ -67,15 +67,7 @@
   </main>
 
   <script>
-    const user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-if (!user) {
-  alert("You must be logged in to view your profile.");
-  window.location.href = "login.html"; // or whatever your login page is
-} else {
-  document.getElementById("username-display").textContent = user.username;
-}
-
+    const user = JSON.parse(localStorage.getItem("user"));
     
     // Load & save store prefs
     const storeForm = document.getElementById("store-form");
@@ -98,7 +90,7 @@ if (!user) {
     dietForm.querySelectorAll('input[name="diet"]').forEach((input) => {
       if (savedDiets.includes(input.value)) input.checked = true;
     });
-    dietForm.addEventListener("submit", async (e) => {
+   dietForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const selected = Array.from(dietForm.querySelectorAll('input[name="diet"]:checked')).map(i => i.value);
   const token = localStorage.getItem("token");
