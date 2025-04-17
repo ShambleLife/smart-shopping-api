@@ -25,7 +25,42 @@ const query = params.get('q');
 const unfiltered = params.get('nofilter') === 'true';
     const preference = JSON.parse(localStorage.getItem("dietaryPreference")) || [];
 
+    function passesDietFilter(ingredients) {
+  if (unfiltered || !preference.length) return true;
 
+  const ingredientString = ingredients.join(" ").toLowerCase();
+
+  for (const pref of preference) {
+    const lower = pref.toLowerCase();
+
+    if (lower === "vegetarian") {
+      if (ingredientString.includes("chicken") || ingredientString.includes("beef") || ingredientString.includes("pork") || ingredientString.includes("bacon") || ingredientString.includes("lamb") || ingredientString.includes("turkey") || ingredientString.includes("anchovy")) {
+        return false;
+      }
+    }
+
+    if (lower === "vegan") {
+      if (
+        ingredientString.includes("chicken") || ingredientString.includes("beef") ||
+        ingredientString.includes("pork") || ingredientString.includes("bacon") ||
+        ingredientString.includes("lamb") || ingredientString.includes("turkey") ||
+        ingredientString.includes("anchovy") || ingredientString.includes("milk") ||
+        ingredientString.includes("cheese") || ingredientString.includes("butter") ||
+        ingredientString.includes("egg") || ingredientString.includes("cream") ||
+        ingredientString.includes("yogurt") || ingredientString.includes("honey")
+      ) {
+        return false;
+      }
+    }
+
+    if (lower === "gluten-free" && ingredientString.includes("wheat")) return false;
+    if (lower === "dairy-free" && ingredientString.includes("milk")) return false;
+    if (lower === "halal" && ingredientString.includes("pork")) return false;
+    if (lower === "kosher" && ingredientString.includes("shellfish")) return false;
+  }
+
+  return true;
+}
 
 function maybeShowDietaryBanner() {
   const banner = document.getElementById("dietaryBanner");
@@ -70,6 +105,7 @@ function displayRecipes(recipes) {
 
   recipes.forEach(recipe => {
   const ingredients = getIngredients(recipe);
+  if (!passesDietFilter(ingredients)) return;
 
   const card = document.createElement('div');
   card.className = 'recipe-card';
