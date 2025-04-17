@@ -56,19 +56,13 @@
           <!-- Top half: existing filters & recipes -->
           <div class="box-b2-right-top">
             <div class="recipe-filter">
-              <a href="#">A–G</a>
-              <a href="#">H–L</a>
-              <a href="#">M–R</a>
-              <a href="#">S–Z</a>
-            </div>
+                <a href="#" onclick="event.preventDefault(); loadAllRecipesWithFilters('A–G')">A–G</a>
+                <a href="#" onclick="event.preventDefault(); loadAllRecipesWithFilters('H–L')">H–L</a>
+                <a href="#" onclick="event.preventDefault(); loadAllRecipesWithFilters('M–R')">M–R</a>
+                <a href="#" onclick="event.preventDefault(); loadAllRecipesWithFilters('S–Z')">S–Z</a>
+              </div>
       
-            <div class="recipe-grid">
-              <div class="recipe-item">Avocado Toast</div>
-              <div class="recipe-item">Blueberry Muffins</div>
-              <div class="recipe-item">Chicken Alfredo</div>
-              <div class="recipe-item">Eggplant Parmesan</div>
-              <div class="recipe-item">Fried Rice</div>
-              <div class="recipe-item">Garlic Bread</div>
+            <div id="recipeGrid" class="recipe-grid">
             </div>
           </div>
       
@@ -111,6 +105,18 @@
     </aside>
   </main>
 
+<!-- Recipe Modal -->
+<div id="recipeModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+      <span id="closeModal" class="close-button">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <img id="modalImage" src="" alt="" />
+      <h3>Ingredients:</h3>
+      <ul id="modalIngredients"></ul>
+      <h3>Instructions:</h3>
+      <p id="modalInstructions"></p>
+    </div>
+  </div>
   <script>
     // Grab user's first name from storage
     let userData = null;
@@ -138,7 +144,7 @@ if (userData && userData.firstName) {
     function getCurrentUser() {
   try {
     const rawUser = localStorage.getItem('user');
-    if (!rawUser || rawUser === 'undefined') return 'guest'; // avoid JSON.parse crash
+    if (!rawUser || rawUser === 'undefined') return 'guest'; 
     const user = JSON.parse(rawUser);
     return user?.username || 'guest';
   } catch (e) {
@@ -279,6 +285,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
     // Initialize on page load
     renderList();
+    loadAllRecipesWithFilters('A–G');
 
     //Meal Planning Logic
 
@@ -427,4 +434,102 @@ function redirectToRecipeResults() {
   window.location.href = `recipe-results.html?q=${encodeURIComponent(query)}`;
 }
 
+function loadSavedRecipesIntoGrid() {
+  const userRaw = localStorage.getItem("user");
+  const user = userRaw ? JSON.parse(userRaw) : { username: "guest" };
+  const key = `savedRecipes_${user.username}`;
+
+  const saved = JSON.parse(localStorage.getItem(key)) || [];
+  const grid = document.getElementById("recipeGrid");
+
+  if (!grid) return;
+
+  saved.forEach(recipe => {
+    const alreadyThere = [...grid.children].some(child => child.textContent === recipe.strMeal);
+    if (alreadyThere) return;
+
+    const item = document.createElement('div');
+    item.className = 'recipe-item';
+    item.textContent = recipe.strMeal;
+
+    grid.appendChild(item);
+  });
+}
+function loadAllRecipesWithFilters(letterGroup = 'A–G') {
+  const userRaw = localStorage.getItem("user");
+  const user = userRaw ? JSON.parse(userRaw) : { username: "guest" };
+  const key = `savedRecipes_${user.username}`;
+  const savedRecipes = JSON.parse(localStorage.getItem(key)) || [];
+
+  const hardcodedTitles = [
+    "Avocado Toast",
+    "Blueberry Muffins",
+    "Chicken Alfredo",
+    "Eggplant Parmesan",
+    "Fried Rice",
+    "Garlic Bread"
+  ];
+
+  const savedTitles = savedRecipes.map(r => r.strMeal).filter(Boolean);
+
+  const allTitles = [...new Set([...hardcodedTitles, ...savedTitles])];
+
+  // Filter based on letter group
+  let range;
+  switch (letterGroup) {
+    case 'A–G': range = /^[A-G]/i; break;
+    case 'H–L': range = /^[H-L]/i; break;
+    case 'M–R': range = /^[M-R]/i; break;
+    case 'S–Z': range = /^[S-Z]/i; break;
+  }
+
+  const filtered = allTitles.filter(title => range.test(title)).sort((a, b) => a.localeCompare(b));
+
+  const grid = document.getElementById("recipeGrid");
+  grid.innerHTML = '';
+
+  filtered.forEach(title => {
+    const div = document.createElement('div');
+    div.className = 'recipe-item';
+    div.textContent = title;
+
+    // Match recipe object if possible
+    const recipe = savedRecipes.find(r => r.strMeal === title);
+
+    div.addEventListener('click', () => {
+      if (recipe) {
+        openRecipeModal(recipe);
+      } else {
+        openRecipeModal({ strMeal: title, strInstructions: "No instructions available.", strIngredient1: null });
+      }
+    });
+
+    grid.appendChild(div);
+  });
+}
+
+function openRecipeModal(recipe) {
+  document.getElementById('modalTitle').textContent = recipe.strMeal || 'Recipe';
+  document.getElementById('modalImage').src = recipe.strMealThumb || '';
+  document.getElementById('modalImage').style.display = recipe.strMealThumb ? 'block' : 'none';
+  document.getElementById('modalInstructions').textContent = recipe.strInstructions || 'No instructions available.';
+
+  const ingredientsList = document.getElementById('modalIngredients');
+  ingredientsList.innerHTML = '';
+  for (let i = 1; i <= 20; i++) {
+    const ing = recipe[`strIngredient${i}`];
+    const measure = recipe[`strMeasure${i}`];
+    if (ing && ing.trim()) {
+      const li = document.createElement('li');
+      li.textContent = `${measure || ''} ${ing}`.trim();
+      ingredientsList.appendChild(li);
+    }
+  }
+
+  document.getElementById('recipeModal').style.display = 'flex';
+}
+
+document.getElementById('closeModal').addEventListener('click', () => {
+  document.getElementById('recipeModal').style.display = 'none';
+});
   </script>

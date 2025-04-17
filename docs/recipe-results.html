@@ -47,22 +47,51 @@ function displayRecipes(recipes) {
   }
 
   recipes.forEach(recipe => {
-    const ingredients = getIngredients(recipe);
+  const ingredients = getIngredients(recipe);
 
-    const card = document.createElement('div');
-    card.className = 'recipe-card';
+  const card = document.createElement('div');
+  card.className = 'recipe-card';
 
-    card.innerHTML = `
-      <h3>${recipe.strMeal}</h3>
-      <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}" />
-      <p><strong>Ingredients:</strong></p>
-      <ul>${ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
-      <p><strong>Instructions:</strong></p>
-      <p>${recipe.strInstructions.slice(0, 200)}...</p>
-    `;
+  // Set the bulk of the HTML like normal
+  card.innerHTML = `
+    <h3>${recipe.strMeal}</h3>
+    <img src="${recipe.strMealThumb}" alt="${recipe.strMeal}" />
+    <p><strong>Ingredients:</strong></p>
+    <ul>${ingredients.map(i => `<li>${i}</li>`).join('')}</ul>
+    <p><strong>Instructions:</strong></p>
+    <p>${recipe.strInstructions.slice(0, 200)}...</p>
+  `;
 
-    container.appendChild(card);
+  // Then create and append the Save button separately
+  const saveBtn = document.createElement('button');
+  saveBtn.textContent = "Save Recipe";
+  saveBtn.className = "save-recipe-btn";
+  saveBtn.addEventListener('click', () => {
+    saveRecipe(recipe);
   });
+
+  card.appendChild(saveBtn);
+  container.appendChild(card);
+});
+}
+
+function saveRecipe(recipe) {
+  const userRaw = localStorage.getItem("user");
+  const user = userRaw ? JSON.parse(userRaw) : { username: "guest" };
+  const key = `savedRecipes_${user.username}`;
+
+  const saved = JSON.parse(localStorage.getItem(key)) || [];
+
+  // Check for duplicates (by meal ID)
+  const exists = saved.some(r => r.idMeal === recipe.idMeal);
+  if (exists) {
+    alert("You've already saved this recipe!");
+    return;
+  }
+
+  saved.push(recipe);
+  localStorage.setItem(key, JSON.stringify(saved));
+  alert(`Saved "${recipe.strMeal}" to your recipe box!`);
 }
 
 // Extract query string from URL

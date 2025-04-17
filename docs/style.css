@@ -1143,6 +1143,46 @@ body, html {
   opacity: 0.6;
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 90%;
+  overflow-y: auto;
+  font-family: 'Quicksand', sans-serif;
+  position: relative;
+}
+
+.modal-content img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  font-size: 2rem;
+  color: #CB7A5C;
+  cursor: pointer;
+}
+
 /* <-- SUGGESTIONS AREA --> */
 .suggestions {
   padding: 1rem;
@@ -1155,4 +1195,21 @@ body, html {
   color: #E9E2D8;
   text-align: center;
   margin-top: 1rem;
+}
+
+/* <-- RECIPE RESULTS PAGE --> */
+.save-recipe-btn {
+  margin-top: 1rem;
+  background-color: #5C757A;
+  color: #E9E2D8;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-family: 'Quicksand', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.save-recipe-btn:hover {
+  background-color: #4a5f50;
 }
