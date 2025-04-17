@@ -113,6 +113,7 @@
       <img id="modalImage" src="" alt="" />
       <h3>Ingredients:</h3>
       <ul id="modalIngredients"></ul>
+      <button id="addIngredientsBtn" class="save-recipe-btn">+ Add Ingredients to Grocery List</button>
       <h3>Instructions:</h3>
       <p id="modalInstructions"></p>
     </div>
@@ -494,15 +495,20 @@ function loadAllRecipesWithFilters(letterGroup = 'A–G') {
     div.textContent = title;
 
     // Match recipe object if possible
-    const recipe = savedRecipes.find(r => r.strMeal === title);
+    let recipe = savedRecipes.find(r => r.strMeal === title);
 
-    div.addEventListener('click', () => {
-      if (recipe) {
-        openRecipeModal(recipe);
-      } else {
-        openRecipeModal({ strMeal: title, strInstructions: "No instructions available.", strIngredient1: null });
-      }
-    });
+// Fallback for hardcoded titles
+if (!recipe) {
+  recipe = {
+    strMeal: title,
+    strInstructions: "This is a placeholder recipe. No full instructions available.",
+    strIngredient1: null
+  };
+}
+
+div.addEventListener('click', () => {
+  openRecipeModal(recipe);
+});
 
     grid.appendChild(div);
   });
@@ -516,15 +522,40 @@ function openRecipeModal(recipe) {
 
   const ingredientsList = document.getElementById('modalIngredients');
   ingredientsList.innerHTML = '';
+
+  const extractedIngredients = [];
+
   for (let i = 1; i <= 20; i++) {
     const ing = recipe[`strIngredient${i}`];
     const measure = recipe[`strMeasure${i}`];
     if (ing && ing.trim()) {
+      const combined = `${measure || ''} ${ing}`.trim();
+      extractedIngredients.push(combined);
+
       const li = document.createElement('li');
-      li.textContent = `${measure || ''} ${ing}`.trim();
+      li.textContent = combined;
       ingredientsList.appendChild(li);
     }
   }
+
+  // Add-to-list logic
+  const addBtn = document.getElementById('addIngredientsBtn');
+  addBtn.onclick = () => {
+    const currentUser = getCurrentUser();
+    const key = `groceryList_${currentUser}`;
+    const existingList = JSON.parse(localStorage.getItem(key)) || [];
+
+    extractedIngredients.forEach(item => {
+      // Check if already in list
+      if (!existingList.find(entry => entry.name === item)) {
+        existingList.push({ name: item, qty: 1 });
+      }
+    });
+
+    localStorage.setItem(key, JSON.stringify(existingList));
+    renderList();
+    alert("Ingredients added to your grocery list!");
+  };
 
   document.getElementById('recipeModal').style.display = 'flex';
 }
