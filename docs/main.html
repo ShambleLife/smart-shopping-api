@@ -51,24 +51,39 @@
         <div class="box-b2-left">
           <h3>Recipe<br>Box</h3>
         </div>
+      
         <div class="box-b2-right">
+          <!-- Top half: existing filters & recipes -->
+          <div class="box-b2-right-top">
             <div class="recipe-filter">
-                <a href="#">A–G</a>
-                <a href="#">H–L</a>
-                <a href="#">M–R</a>
-                <a href="#">S–Z</a>
-              </div>
-              
-              <div class="recipe-grid">
-                <div class="recipe-item">Avocado Toast</div>
-                <div class="recipe-item">Blueberry Muffins</div>
-                <div class="recipe-item">Chicken Alfredo</div>
-                <div class="recipe-item">Eggplant Parmesan</div>
-                <div class="recipe-item">Fried Rice</div>
-                <div class="recipe-item">Garlic Bread</div>
-              </div>
+              <a href="#">A–G</a>
+              <a href="#">H–L</a>
+              <a href="#">M–R</a>
+              <a href="#">S–Z</a>
+            </div>
+      
+            <div class="recipe-grid">
+              <div class="recipe-item">Avocado Toast</div>
+              <div class="recipe-item">Blueberry Muffins</div>
+              <div class="recipe-item">Chicken Alfredo</div>
+              <div class="recipe-item">Eggplant Parmesan</div>
+              <div class="recipe-item">Fried Rice</div>
+              <div class="recipe-item">Garlic Bread</div>
+            </div>
+          </div>
+      
+     
+          <div class="recipe-divider"></div>
+      
+          <!-- Bottom half: new recipe search -->
+          <div class="box-b2-right-bottom">
+            <h3>Find New Recipes</h3>
+            <input type="text" id="recipeSearch" placeholder="Search for a recipe" />
+            <button onclick="redirectToRecipeResults()">Search</button>
+          </div>
         </div>
       </div>
+      
     </section>
 
     <!-- Right side: 25% -->
@@ -92,9 +107,9 @@
 
       <!--<div class="box box-b5">
         <h2>B5</h2>
-      </div>
+      </div> -->
     </aside>
-  </main> -->
+  </main>
 
   <script>
     // Grab user's first name from storage
@@ -405,5 +420,11 @@ document.getElementById("shop-button").addEventListener("click", async () => {
     alert("Something went wrong while trying to shop your list.");
   }
 });
+
+function redirectToRecipeResults() {
+  const query = document.getElementById('recipeSearch').value.trim();
+  if (!query) return;
+  window.location.href = `recipe-results.html?q=${encodeURIComponent(query)}`;
+}
 
   </script>
