@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   );
 
   const [krogerData, publixData, wholefoodsData] = await Promise.all([
-    fetch("https://corsproxy.io/?https://simple-grocery-store-api.glitch.me/products")
+    fetch("https://api.allorigins.win/raw?url=https://simple-grocery-store-api.glitch.me/products")
+
 .then(res => res.json()),
     fetch("publix.json").then(res => res.json()),
     fetch("wholefoods.json").then(res => res.json())
