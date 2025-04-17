@@ -1230,6 +1230,22 @@ body, html {
   text-decoration: underline;
 }
 
+.dietary-banner {
+  background-color: #fffbe6;
+  border-left: 6px solid #CB7A5C;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  color: #5C757A;
+}
+.dietary-banner a {
+  color: #CB7A5C;
+  text-decoration: underline;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
 /* <-- RECIPE MODAL --> */
 #addIngredientsBtn {
   margin: 1rem 0;
