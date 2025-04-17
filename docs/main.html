@@ -581,29 +581,60 @@ document.getElementById('closeModal').addEventListener('click', () => {
 });
 //Suggestion logic
 function renderSuggestions() {
-  const user = getCurrentUser();
-  const history = JSON.parse(localStorage.getItem(`purchaseHistory_${user}`) || "{}");
+  const user = JSON.parse(localStorage.getItem("user"))?.username || "guest";
+  const key = `purchaseHistory_${user}`;
+  const history = JSON.parse(localStorage.getItem(key) || "{}");
+
+  const suggestionsDiv = document.querySelector('.suggestions');
   const today = new Date();
-  const suggestions = [];
+  const suggested = [];
 
-  for (let item in history) {
-    const dates = history[item].map(d => new Date(d)).sort((a, b) => a - b);
-    const lastPurchase = dates[dates.length - 1];
-    const daysSince = Math.floor((today - lastPurchase) / (1000 * 60 * 60 * 24));
-    const frequency = dates.length;
+  for (const item in history) {
+    const dates = history[item];
+    if (dates.length >= 2) {
+      const last = new Date(dates[dates.length - 1]);
+      const secondLast = new Date(dates[dates.length - 2]);
 
-    // Heuristic: Bought 3+ times, last bought 7+ days ago = Suggest!
-    if (frequency >= 3 && daysSince >= 7) {
-      suggestions.push(`${item} (bought ${frequency} times, last seen ${daysSince} days ago)`);
+      const interval = (last - secondLast) / (1000 * 60 * 60 * 24); // in days
+      const sinceLast = (today - last) / (1000 * 60 * 60 * 24);     // in days
+
+      if (interval > 0 && sinceLast >= interval - 2) {
+        suggested.push(item);
+      }
     }
   }
 
-  const box = document.querySelector(".suggestions");
-  if (suggestions.length) {
-    box.innerHTML = `<strong>Need a refill?</strong><ul>${suggestions.map(i => `<li>${i}</li>`).join('')}</ul>`;
-  } else {
-    box.innerHTML = `No suggestions yet! Once you start shopping regularly, we'll learn your snacky secrets.`;
+  if (suggested.length === 0) {
+    suggestionsDiv.innerHTML = "No suggestions yet! Once you start shopping regularly, we'll learn your snacky secrets.";
+    return;
   }
+
+  suggestionsDiv.innerHTML = `<strong>Suggested items:</strong> ${suggested.map(item => `
+    <span class="suggestion-item" style="cursor:pointer; text-decoration:underline; margin: 0 6px;" onclick="addSuggestionToList('${item}')">${item}</span>
+  `).join("")}`;
 }
+
+function addSuggestionToList(itemName) {
+  const key = `groceryList_${getCurrentUser()}`;
+  const list = JSON.parse(localStorage.getItem(key)) || [];
+
+  const alreadyExists = list.find(entry => entry.name.toLowerCase() === itemName.toLowerCase());
+  if (alreadyExists) {
+    alert(`${itemName} is already on your list!`);
+    return;
+  }
+
+  list.push({ name: itemName, qty: 1 });
+  localStorage.setItem(key, JSON.stringify(list));
+  renderList();
+
+  const suggestionsDiv = document.querySelector('.suggestions');
+  suggestionsDiv.innerHTML += `<div class="b3-feedback visible">Added ${itemName}!</div>`;
+  setTimeout(() => {
+    const feedback = document.querySelector('.b3-feedback');
+    if (feedback) feedback.remove();
+  }, 1500);
+}
+
 
   </script>
