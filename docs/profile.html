@@ -67,7 +67,15 @@
   </main>
 
   <script>
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+if (!user) {
+  alert("You must be logged in to view your profile.");
+  window.location.href = "login.html"; // or whatever your login page is
+} else {
+  document.getElementById("username-display").textContent = user.username;
+}
+
     
     // Load & save store prefs
     const storeForm = document.getElementById("store-form");
