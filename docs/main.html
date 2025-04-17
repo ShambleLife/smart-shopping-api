@@ -595,8 +595,8 @@ function renderSuggestions() {
       const last = new Date(dates[dates.length - 1]);
       const secondLast = new Date(dates[dates.length - 2]);
 
-      const interval = (last - secondLast) / (1000 * 60 * 60 * 24); // in days
-      const sinceLast = (today - last) / (1000 * 60 * 60 * 24);     // in days
+      const interval = (last - secondLast) / (1000 * 60 * 60 * 24); // days
+      const sinceLast = (today - last) / (1000 * 60 * 60 * 24);     // days
 
       if (interval > 0 && sinceLast >= interval - 2) {
         suggested.push(item);
@@ -605,14 +605,24 @@ function renderSuggestions() {
   }
 
   if (suggested.length === 0) {
-    suggestionsDiv.innerHTML = "No suggestions yet! Once you start shopping regularly, we'll learn your snacky secrets.";
+    suggestionsDiv.innerHTML = `
+      <div class="suggestion-text">
+        No suggestions yet! Once you start shopping regularly, we'll learn your snacky secrets.
+      </div>
+    `;
     return;
   }
 
-  suggestionsDiv.innerHTML = `<strong>Suggested items:</strong> ${suggested.map(item => `
-    <span class="suggestion-item" style="cursor:pointer; text-decoration:underline; margin: 0 6px;" onclick="addSuggestionToList('${item}')">${item}</span>
-  `).join("")}`;
+  suggestionsDiv.innerHTML = `
+    <div class="suggestion-text">Hey Smart Shopper 👀 based on your past lists, you might need:</div>
+    <div class="suggestion-list">
+      ${suggested.map(item => `
+        <span class="suggestion-item" style="cursor:pointer; text-decoration:underline; margin: 0 6px;" onclick="addSuggestionToList('${item}')">${item}</span>
+      `).join("")}
+    </div>
+  `;
 }
+
 
 function addSuggestionToList(itemName) {
   const key = `groceryList_${getCurrentUser()}`;
