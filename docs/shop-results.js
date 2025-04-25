@@ -25,17 +25,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   function buildStoreBreakdown(storeItems) {
     const breakdown = [];
     let total = 0;
-
+  
     normalizedList.forEach(name => {
-      const match = storeItems.find(p => p.name?.toLowerCase?.().trim?.() === name);
+      const match = storeItems.find(p => {
+        const productName = p.name || p.title || "";
+        return productName.toLowerCase().trim() === name;
+      });
+  
       if (match) {
-        breakdown.push({ name: match.name, price: match.price });
+        const productName = match.name || match.title || name;
+        breakdown.push({ name: productName, price: match.price });
         total += match.price;
       } else {
         breakdown.push({ name, price: 0 });
       }
     });
-
+  
     return { breakdown, total };
   }
 

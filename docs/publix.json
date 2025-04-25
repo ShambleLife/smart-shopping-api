@@ -1,5 +1,6 @@
 [
     { "name": "Banana", "price": 0.49 },
-    { "name": "Milk", "price": 3.29 }
+    { "name": "Milk", "price": 3.29 },
+    { "name": "Chocolate", "price": 3.29 }
   ]
   
