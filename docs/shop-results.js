@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const groceryList = JSON.parse(localStorage.getItem("groceryList_guest")) || [];
+  const currentUser = localStorage.getItem("currentUser");
+const groceryList = JSON.parse(localStorage.getItem(`groceryList_${currentUser}`)) || [];
 
   if (groceryList.length === 0) {
     alert("You must have selected grocery items on your list.");
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log("normalizedList item:", name);
     console.log("storeItems names:", storeItems.map(p => (p.name || p.title)));
-    
+
       const match = storeItems.find(p => {
         const productName = (p.name || p.title || "").toLowerCase().trim();
         return productName === name;
