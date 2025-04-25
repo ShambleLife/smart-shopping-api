@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   
     normalizedList.forEach(name => {
       const match = storeItems.find(p => {
-        const productName = p.name || p.title || "";
-        return productName.toLowerCase().trim() === name;
+        const productName = (p.name || p.title || "").toLowerCase().trim();
+        return productName === name;
       });
   
       if (match) {
