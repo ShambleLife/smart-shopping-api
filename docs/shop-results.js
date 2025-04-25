@@ -12,11 +12,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     item.name?.toLowerCase?.().trim?.() || item.toLowerCase?.().trim?.()
   );
 
-  const [krogerData, publixData, wholefoodsData] = await Promise.all([
-    fetch("https://corsproxy.io/?https://simple-grocery-store-api.glitch.me/products").then(res => res.json()),
+  const [dummyData, publixData, wholefoodsData] = await Promise.all([
+    fetch("https://dummyjson.com/products").then(res => res.json()),
     fetch("publix.json").then(res => res.json()),
     fetch("wholefoods.json").then(res => res.json())
   ]);
+  
+  
+  const krogerData = dummyData.products;
   
 
   function buildStoreBreakdown(storeItems) {
