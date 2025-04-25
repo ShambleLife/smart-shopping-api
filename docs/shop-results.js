@@ -42,6 +42,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   
     return { breakdown, total };
+    console.log("normalizedList item:", name);
+    console.log("storeItems names:", storeItems.map(p => (p.name || p.title)));
   }
 
   const stores = {
