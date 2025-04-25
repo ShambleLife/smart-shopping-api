@@ -141,6 +141,8 @@ if (userData && userData.firstName) {
     const addItemForm = document.getElementById('addItemForm');
     const itemNameInput = document.getElementById('item-name');
     const itemQtyInput = document.getElementById('item-qty');
+    const currentUser = localStorage.getItem("currentUser");
+    const groceryList = JSON.parse(localStorage.getItem('groceryList_${currentUser}')) || [];
   
     function getCurrentUser() {
   try {
