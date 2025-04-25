@@ -27,6 +27,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     let total = 0;
   
     normalizedList.forEach(name => {
+
+    console.log("normalizedList item:", name);
+    console.log("storeItems names:", storeItems.map(p => (p.name || p.title)));
+    
       const match = storeItems.find(p => {
         const productName = (p.name || p.title || "").toLowerCase().trim();
         return productName === name;
@@ -42,8 +46,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   
     return { breakdown, total };
-    console.log("normalizedList item:", name);
-    console.log("storeItems names:", storeItems.map(p => (p.name || p.title)));
   }
 
   const stores = {
