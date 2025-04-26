@@ -7,27 +7,39 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Normalize product names
   const normalizedList = groceryList.map(item =>
     item.name?.toLowerCase?.().trim?.() || item.toLowerCase?.().trim?.()
   );
 
-  const [krogerData, publixData, wholefoodsData] = await Promise.all([
-    fetch("https://dummyjson.com/products").then(res => res.json()), // Updated to DummyJSON
-    fetch("publix.json").then(res => res.json()),
-    fetch("wholefoods.json").then(res => res.json())
-  ]);
+  let krogerData = [];
+  let publixData = [];
+  let wholefoodsData = [];
 
-  function buildStoreBreakdown(storeItems, isDummyJson = false) {
+  try {
+    const [krogerResponse, publixResponse, wholefoodsResponse] = await Promise.all([
+      fetch("https://dummyjson.com/products").then(res => res.json()),
+      fetch("publix.json").then(res => res.json()),
+      fetch("wholefoods.json").then(res => res.json())
+    ]);
+
+    krogerData = krogerResponse.products || []; // DummyJSON has products
+    publixData = publixResponse; // Your local file is a normal array
+    wholefoodsData = wholefoodsResponse; // Your local file is a normal array
+
+  } catch (error) {
+    console.error("Failed to fetch store data:", error);
+    alert("Error loading store data. Please try again later.");
+    return;
+  }
+
+  function buildStoreBreakdown(storeItems) {
     const breakdown = [];
     let total = 0;
 
     normalizedList.forEach(name => {
-      const itemsArray = isDummyJson ? storeItems.products : storeItems; // DummyJSON has .products
-      const match = itemsArray.find(p => 
+      const match = storeItems.find(p =>
         (p.name || p.title)?.toLowerCase?.().trim?.() === name
       );
-
       if (match) {
         breakdown.push({ name: match.name || match.title, price: match.price });
         total += match.price;
@@ -41,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const stores = {
     "Publix": buildStoreBreakdown(publixData),
-    "Kroger": buildStoreBreakdown(krogerData, true), // true = DummyJSON format
+    "Kroger": buildStoreBreakdown(krogerData),
     "Whole Foods": buildStoreBreakdown(wholefoodsData)
   };
 
