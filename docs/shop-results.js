@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const currentUser = localStorage.getItem("currentUser");
-const groceryList = JSON.parse(localStorage.getItem(`groceryList_${currentUser}`)) || [];
+  const groceryList = JSON.parse(localStorage.getItem("groceryList_guest")) || [];
 
   if (groceryList.length === 0) {
     alert("You must have selected grocery items on your list.");
@@ -8,50 +7,41 @@ const groceryList = JSON.parse(localStorage.getItem(`groceryList_${currentUser}`
     return;
   }
 
-  // Normalize product names in the list
+  // Normalize product names
   const normalizedList = groceryList.map(item =>
     item.name?.toLowerCase?.().trim?.() || item.toLowerCase?.().trim?.()
   );
 
-  const [dummyData, publixData, wholefoodsData] = await Promise.all([
-    fetch("https://dummyjson.com/products").then(res => res.json()),
+  const [krogerData, publixData, wholefoodsData] = await Promise.all([
+    fetch("https://dummyjson.com/products").then(res => res.json()), // Updated to DummyJSON
     fetch("publix.json").then(res => res.json()),
     fetch("wholefoods.json").then(res => res.json())
   ]);
-  
-  
-  const krogerData = dummyData.products;
-  
 
-  function buildStoreBreakdown(storeItems) {
+  function buildStoreBreakdown(storeItems, isDummyJson = false) {
     const breakdown = [];
     let total = 0;
-  
+
     normalizedList.forEach(name => {
+      const itemsArray = isDummyJson ? storeItems.products : storeItems; // DummyJSON has .products
+      const match = itemsArray.find(p => 
+        (p.name || p.title)?.toLowerCase?.().trim?.() === name
+      );
 
-    console.log("normalizedList item:", name);
-    console.log("storeItems names:", storeItems.map(p => (p.name || p.title)));
-
-      const match = storeItems.find(p => {
-        const productName = (p.name || p.title || "").toLowerCase().trim();
-        return productName === name;
-      });
-  
       if (match) {
-        const productName = match.name || match.title || name;
-        breakdown.push({ name: productName, price: match.price });
+        breakdown.push({ name: match.name || match.title, price: match.price });
         total += match.price;
       } else {
         breakdown.push({ name, price: 0 });
       }
     });
-  
+
     return { breakdown, total };
   }
 
   const stores = {
     "Publix": buildStoreBreakdown(publixData),
-    "Kroger": buildStoreBreakdown(krogerData),
+    "Kroger": buildStoreBreakdown(krogerData, true), // true = DummyJSON format
     "Whole Foods": buildStoreBreakdown(wholefoodsData)
   };
 
