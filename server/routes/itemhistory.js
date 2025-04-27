@@ -19,6 +19,7 @@ router.post('/', async (req, res) => {
       addedAt: addedAt || new Date()
     });
 
+    
     await newItemHistory.save();
     res.status(201).json({ message: "Item history saved!" });
   } catch (err) {
@@ -29,4 +30,4 @@ router.post('/', async (req, res) => {
 
 // You could also later add a GET route to fetch user's history if needed!
 
-module.exports = { router };
+module.exports = router;
