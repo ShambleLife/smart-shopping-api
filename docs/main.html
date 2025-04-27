@@ -222,6 +222,31 @@ listContainer.appendChild(col1);
 listContainer.appendChild(col2);
 listContainer.appendChild(col3);
     }
+
+    async function saveItemToHistory(itemName) {
+  const user = JSON.parse(localStorage.getItem('user')) || { username: 'guest' };
+  const username = user?.username || 'guest';
+
+  const newHistoryItem = {
+    username: username,
+    name: itemName,
+    qty: 1,
+    addedAt: new Date().toISOString()
+  };
+
+  try {
+    await fetch('https://smart-shopping-api-1k1z.onrender.com/itemhistory', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newHistoryItem)
+    });
+    console.log('Item saved to itemHistory collection:', itemName);
+  } catch (error) {
+    console.error('Failed to save item to itemHistory:', error);
+  }
+}
   
     function changeQty(index, change) {
         const list = getList();
@@ -249,6 +274,8 @@ listContainer.appendChild(col3);
       const list = getList();
       list.push({ name, qty });
       saveList(list);
+
+      saveItemToHistory(name);
   
       itemNameInput.value = '';
       itemQtyInput.value = '';
@@ -270,6 +297,8 @@ addItemFormB3.addEventListener('submit', (e) => {
   const list = getList();
   list.push({ name, qty });
   saveList(list);
+
+  saveItemToHistory(name);
 
   itemNameInputB3.value = '';
   itemQtyInputB3.value = '';

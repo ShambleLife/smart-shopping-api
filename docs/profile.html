@@ -67,47 +67,48 @@
   </main>
 
   <script>
-    const user = JSON.parse(localStorage.getItem("loggedInUser"));
-    
-    // Load & save store prefs
-    const storeForm = document.getElementById("store-form");
-    const storeKey = `storePrefs_${user.username}`;
-    const savedStores = JSON.parse(localStorage.getItem(storeKey) || "[]");
-    storeForm.querySelectorAll('input[name="stores"]').forEach((input) => {
-      if (savedStores.includes(input.value)) input.checked = true;
-    });
-    storeForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const selected = Array.from(storeForm.querySelectorAll('input[name="stores"]:checked')).map(i => i.value);
-      localStorage.setItem(storeKey, JSON.stringify(selected));
-      alert("Store preferences saved!");
-    });
+    const user = JSON.parse(localStorage.getItem("user")) || { username: "guest" };
+const username = user?.username || "guest";
 
-    // Load & save diet prefs
-    const dietForm = document.getElementById("diet-form");
-    const dietKey = `dietPrefs_${user.username}`;
-    const savedDiets = JSON.parse(localStorage.getItem(dietKey) || "[]");
-    dietForm.querySelectorAll('input[name="diet"]').forEach((input) => {
-      if (savedDiets.includes(input.value)) input.checked = true;
-    });
-    dietForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const selected = Array.from(dietForm.querySelectorAll('input[name="diet"]:checked')).map(i => i.value);
-      localStorage.setItem(dietKey, JSON.stringify(selected));
-      alert("Dietary preferences saved!");
-    });
+// Load & save store prefs
+const storeForm = document.getElementById("store-form");
+const storeKey = `storePrefs_${username}`;
+const savedStores = JSON.parse(localStorage.getItem(storeKey) || "[]");
+storeForm.querySelectorAll('input[name="stores"]').forEach((input) => {
+  if (savedStores.includes(input.value)) input.checked = true;
+});
+storeForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const selected = Array.from(storeForm.querySelectorAll('input[name="stores"]:checked')).map(i => i.value);
+  localStorage.setItem(storeKey, JSON.stringify(selected));
+  alert("Store preferences saved!");
+});
 
-    // Load & save location
-    const locationForm = document.getElementById("location-form");
-    const locationInput = document.getElementById("location");
-    const locationKey = `location_${user.username}`;
-    const savedLocation = localStorage.getItem(locationKey) || "";
-    locationInput.value = savedLocation;
-    locationForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      localStorage.setItem(locationKey, locationInput.value.trim());
-      alert("Location saved!");
-    });
+// Load & save diet prefs
+const dietForm = document.getElementById("diet-form");
+const dietKey = `dietPrefs_${username}`;
+const savedDiets = JSON.parse(localStorage.getItem(dietKey) || "[]");
+dietForm.querySelectorAll('input[name="diet"]').forEach((input) => {
+  if (savedDiets.includes(input.value)) input.checked = true;
+});
+dietForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const selected = Array.from(dietForm.querySelectorAll('input[name="diet"]:checked')).map(i => i.value);
+  localStorage.setItem(dietKey, JSON.stringify(selected));
+  alert("Dietary preferences saved!");
+});
+
+// Load & save location
+const locationForm = document.getElementById("location-form");
+const locationInput = document.getElementById("location");
+const locationKey = `location_${username}`;
+const savedLocation = localStorage.getItem(locationKey) || "";
+locationInput.value = savedLocation;
+locationForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  localStorage.setItem(locationKey, locationInput.value.trim());
+  alert("Location saved!");
+});
   </script>
 </body>
 </html>

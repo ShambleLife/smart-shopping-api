@@ -36,3 +36,6 @@ app.use('/shop', shopRoute);
 
 const recipeRoutes = require('./routes/recipes');
 app.use('/recipes', recipeRoutes);
+
+const itemHistoryRoutes = require('./routes/itemhistory');
+app.use('/itemhistory', itemHistoryRoutes);
