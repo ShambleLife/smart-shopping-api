@@ -1,70 +1,57 @@
-# Getting Started with Create React App
+Mock Grocery Data
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a simple grocery price mock-up repository, designed to simulate real-world grocery store scraping for testing and development purposes.
 
-## Available Scripts
+It contains hardcoded HTML files for three stores:
+	•	Kroger (groceries.html)
+	•	Publix (pub.html)
+	•	Whole Foods (wf.html)
 
-In the project directory, you can run:
+   How to Set Up and Run
+	1.	Clone the Repository
+        git clone https://github.com?ShambleLife/mock-grocery-data.git
+        cd mock-grocery-data
 
-### `npm start`
+    2.	Deploy with GitHub Pages (recommended)
+	•	Go to your GitHub repository settings.
+	•	Scroll down to Pages.
+	•	Set Source to main branch, / (root).
+	•	GitHub will give you a live URL like https://your-username.github.io/mock-grocery-data/.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+    3.	Access the mock HTML pages:
+	•	https://your-username.github.io/mock-grocery-data/groceries.html
+	•	https://your-username.github.io/mock-grocery-data/pub.html
+	•	https://your-username.github.io/mock-grocery-data/wf.html
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    4.	Fetch the data in your project
+	•	Use fetch() calls to scrape these HTML files as if they were real webpages!
 
-### `npm test`
+    Key Features
+	•	Provides fake grocery pricing data for testing shopping apps.
+	•	Simulates data for multiple stores (Kroger, Publix, Whole Foods).
+	•	Structured for easy scraping using JavaScript.
+	•	No API key or server required — pure static HTML.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    Dependencies
+	•	None.
+    (It’s just static HTML. Your main project will need fetch() to scrape and parse it.)
 
-### `npm run build`
+    Important Notes
+	•	This repository is static-only.
+	•	To “scrape” the files, your frontend needs to fetch the page and manually parse the HTML.
+	•	Ideal for mock tests, project demos, or front-end API simulation.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    Example Use Case
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    In your app:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    javascript
+    const response = await fetch('https://your-username.github.io/mock-grocery-data/groceries.html');
+    const text = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, 'text/html');
+    const items = Array.from(doc.querySelectorAll('#grocery-list li')).map(li => ({
+    name: li.querySelector('.item-name')?.textContent.trim(),
+    price: parseFloat(li.querySelector('.item-price')?.textContent.replace('$', '')) || 0
+    }));
+    console.log(items);
