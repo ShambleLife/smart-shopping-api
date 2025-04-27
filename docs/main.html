@@ -432,7 +432,9 @@ function renderMealPlanner(weekData) {
 fetchMealPlan().then(renderMealPlanner);
 
 
-document.getElementById("shop-button").addEventListener("click", async () => {
+document.getElementById("shop-button").addEventListener("click", async (e) => {
+  e.preventDefault(); // <-- STOP the auto form submit
+
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user')) || { username: 'guest' };
   const username = user?.username || 'guest';
@@ -440,22 +442,18 @@ document.getElementById("shop-button").addEventListener("click", async () => {
   const storePrefs = JSON.parse(localStorage.getItem(`storePrefs_${username}`) || "[]");
   const list = JSON.parse(localStorage.getItem(`groceryList_${username}`) || "[]");
 
-  console.log("Click handler triggered!");
-console.log("Username:", username);
-console.log("StorePrefs:", storePrefs);
-console.log("GroceryList:", list);
-console.log("StorePrefs length:", storePrefs.length);
-console.log("List length:", list.length);
+  console.log("✅ Click triggered!");
+  console.log("Username:", username);
+  console.log("StorePrefs:", storePrefs);
+  console.log("GroceryList:", list);
 
   if (!storePrefs.length || !list.length) {
     alert("You must have selected grocery stores and items in your list.");
     return;
   }
 
-
   try {
-    // List to local
-    const now = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
+    const now = new Date().toISOString().split('T')[0];
     const historyKey = `purchaseHistory_${username}`;
     const history = JSON.parse(localStorage.getItem(historyKey) || "{}");
 
@@ -467,7 +465,6 @@ console.log("List length:", list.length);
 
     localStorage.setItem(historyKey, JSON.stringify(history));
 
-    //API Request
     const res = await fetch('https://smart-shopping-api-1k1z.onrender.com/shop', {
       method: 'POST',
       headers: {
