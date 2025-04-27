@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const user = JSON.parse(localStorage.getItem('user')) || { username: 'guest' };
-  const username = user?.username || 'guest';
+  const user = JSON.parse(localStorage.getItem("user")) || { username: "guest" };
+  const username = user?.username || "guest";
+
   const groceryList = JSON.parse(localStorage.getItem(`groceryList_${username}`)) || [];
 
   if (groceryList.length === 0) {
@@ -8,6 +9,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.location.href = "main.html";
     return;
   }
+
 
   const normalizedList = groceryList.map(item =>
     item.name?.toLowerCase?.().trim?.() || item.toLowerCase?.().trim?.()
@@ -17,6 +19,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let publixData = [];
   let wholefoodsData = [];
 
+  // Function to scrape GitHub HTML pages
   async function fetchStoreData(url) {
     const res = await fetch(url);
     const text = await res.text();
