@@ -429,7 +429,7 @@ fetchMealPlan().then(renderMealPlanner);
 
 
 document.getElementById("shop-button").addEventListener("click", async (e) => {
-  e.preventDefault(); // <-- STOP the auto form submit
+  e.preventDefault(); 
 
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user')) || { username: 'guest' };
@@ -442,8 +442,13 @@ document.getElementById("shop-button").addEventListener("click", async (e) => {
   console.log("Username:", username);
   console.log("StorePrefs:", storePrefs);
   console.log("GroceryList:", list);
+  console.log("StorePrefs length:", storePrefs.length);
+  console.log("GroceryList length:", list.length);
 
   if (!storePrefs.length || !list.length) {
+    console.error("❌ Still missing something:");
+    console.error("StorePrefs:", storePrefs);
+    console.error("GroceryList:", list);
     alert("You must have selected grocery stores and items in your list.");
     return;
   }
