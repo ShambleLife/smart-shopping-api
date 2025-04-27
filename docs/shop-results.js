@@ -15,17 +15,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   let publixData = [];
   let wholefoodsData = [];
 
+  // Function to scrape GitHub HTML pages
+  async function fetchStoreData(url) {
+    const res = await fetch(url);
+    const text = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, "text/html");
+
+    const items = [...doc.querySelectorAll("#grocery-list li")];
+    return items.map(li => {
+      const name = li.querySelector(".item-name")?.textContent?.trim() || "";
+      const priceText = li.querySelector(".item-price")?.textContent?.replace('$', '').trim() || "0";
+      const price = parseFloat(priceText) || 0;
+      return { name, price };
+    });
+  }
+
   try {
     const [krogerResponse, publixResponse, wholefoodsResponse] = await Promise.all([
-      fetch("https://dummyjson.com/products").then(res => res.json()),
-      fetch("publix.json").then(res => res.json()),
-      fetch("wholefoods.json").then(res => res.json())
+      fetchStoreData("https://shamblelife.github.io/mock-grocery-data/groceries.html"),
+      fetchStoreData("https://shamblelife.github.io/mock-grocery-data/pub.html"),
+      fetchStoreData("https://shamblelife.github.io/mock-grocery-data/wf.html")
     ]);
 
-    krogerData = krogerResponse.products || []; // DummyJSON has products
-    publixData = publixResponse; // Your local file is a normal array
-    wholefoodsData = wholefoodsResponse; // Your local file is a normal array
-
+    krogerData = krogerResponse;
+    publixData = publixResponse;
+    wholefoodsData = wholefoodsResponse;
   } catch (error) {
     console.error("Failed to fetch store data:", error);
     alert("Error loading store data. Please try again later.");
