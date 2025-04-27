@@ -15,40 +15,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   let publixData = [];
   let wholefoodsData = [];
 
+  // Function to scrape GitHub HTML pages
+  async function fetchStoreData(url) {
+    const res = await fetch(url);
+    const text = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, "text/html");
+
+    const items = [...doc.querySelectorAll("#grocery-list li")];
+    return items.map(li => {
+      const name = li.querySelector(".item-name")?.textContent?.trim() || "";
+      const priceText = li.querySelector(".item-price")?.textContent?.replace('$', '').trim() || "0";
+      const price = parseFloat(priceText) || 0;
+      return { name, price };
+    });
+  }
+
   try {
-    const [krogerHTML, publixHTML, wholefoodsHTML] = await Promise.all([
-      fetch("https://raw.githubusercontent.com/ShambleLife/mock-grocery-data/main/groceries.html").then(res => res.text()),
-      fetch("https://raw.githubusercontent.com/ShambleLife/mock-grocery-data/main/pub.html").then(res => res.text()),
-      fetch("https://raw.githubusercontent.com/ShambleLife/mock-grocery-data/main/wf.html").then(res => res.text())
+    const [krogerResponse, publixResponse, wholefoodsResponse] = await Promise.all([
+      fetchStoreData("https://shamblelife.github.io/mock-grocery-data/groceries.html"),
+      fetchStoreData("https://shamblelife.github.io/mock-grocery-data/pub.html"),
+      fetchStoreData("https://shamblelife.github.io/mock-grocery-data/wf.html")
     ]);
 
-    krogerData = scrapeHTML(krogerHTML);
-    publixData = scrapeHTML(publixHTML);
-    wholefoodsData = scrapeHTML(wholefoodsHTML);
-
+    krogerData = krogerResponse;
+    publixData = publixResponse;
+    wholefoodsData = wholefoodsResponse;
   } catch (error) {
     console.error("Failed to fetch store data:", error);
     alert("Error loading store data. Please try again later.");
     return;
-  }
-
-  function scrapeHTML(htmlString) {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, "text/html");
-
-    const items = [];
-    const itemElements = doc.querySelectorAll(".item");
-
-    itemElements.forEach(el => {
-      const name = el.querySelector(".name")?.textContent?.trim();
-      const price = parseFloat(el.querySelector(".price")?.textContent?.replace("$", "").trim());
-
-      if (name && !isNaN(price)) {
-        items.push({ name, price });
-      }
-    });
-
-    return items;
   }
 
   function buildStoreBreakdown(storeItems) {
@@ -57,10 +53,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     normalizedList.forEach(name => {
       const match = storeItems.find(p =>
-        (p.name)?.toLowerCase?.().trim?.() === name
+        (p.name || p.title)?.toLowerCase?.().trim?.() === name
       );
       if (match) {
-        breakdown.push({ name: match.name, price: match.price });
+        breakdown.push({ name: match.name || match.title, price: match.price });
         total += match.price;
       } else {
         breakdown.push({ name, price: 0 });
