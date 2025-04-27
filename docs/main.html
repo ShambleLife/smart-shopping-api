@@ -98,14 +98,6 @@
               <!-- Days will be injected here dynamically -->
             </div>
           </div>
-          
-          <div class="box box-b5">
-            <h2>Pantry</h2>
-            <div id="pantry-list" class="pantry-list">
-              <p class="empty-pantry">No items in pantry yet!</p>
-            </div>
-          </div>
-          
 
       <!--<div class="box box-b5">
         <h2>B5</h2>
@@ -253,22 +245,18 @@ listContainer.appendChild(col3);
 }
   
     function changeQty(index, change) {
-      const list = getList();
-      const currentQty = list[index].qty || 1;
-      const newQty = currentQty + change;
+        const list = getList();
+        const currentQty = list[index].qty || 1;
+        const newQty = currentQty + change;
 
-      if (newQty < 1) {
-        if (confirm(`Move "${list[index].name}" to Pantry instead of deleting?`)) {
-          moveToPantry(list[index]);
+        if (newQty < 1) {
+            list.splice(index, 1); 
+         } else {
+            list[index].qty = Math.min(newQty, 99); // max of 99
         }
-        list.splice(index, 1);
-      } else {
-        list[index].qty = Math.min(newQty, 99);
-      }
-
-      saveList(list);
-      renderList();
-      renderPantry();
+        console.log("Saving for:", getCurrentUser());
+        saveList(list);
+        renderList();
     }
     console.log("Current user:", getCurrentUser());
     addItemForm.addEventListener('submit', (e) => {
@@ -696,80 +684,6 @@ function addSuggestionToList(itemName) {
     const feedback = document.querySelector('.b3-feedback');
     if (feedback) feedback.remove();
   }, 1500);
-}
-
-//pantry logic
-const pantryList = JSON.parse(localStorage.getItem(`pantryList_${getCurrentUser()}`)) || [];
-
-function savePantry(list) {
-  localStorage.setItem(`pantryList_${getCurrentUser()}`, JSON.stringify(list));
-}
-
-function moveToPantry(item) {
-  let expiryInput = prompt(`Enter expiration date for "${item.name}" (YYYY-MM-DD) or leave blank:`);
-  let expiryDate = null;
-  if (expiryInput) {
-    const parsedDate = new Date(expiryInput);
-    if (!isNaN(parsedDate)) {
-      expiryDate = parsedDate.toISOString().split('T')[0];
-    } else {
-      alert("Invalid date format. Expiry date will be left blank.");
-    }
-  }
-  pantryList.push({ name: item.name, expiry: expiryDate });
-  savePantry(pantryList);
-  renderPantry();
-}
-
-function renderPantry() {
-  const pantryContainer = document.getElementById('pantry-list');
-  pantryContainer.innerHTML = '';
-
-  if (pantryList.length === 0) {
-    pantryContainer.innerHTML = `<p class="empty-pantry">No items in pantry yet!</p>`;
-    return;
-  }
-
-  pantryList.forEach((item, index) => {
-    const itemDiv = document.createElement('div');
-    itemDiv.className = 'pantry-item';
-
-    let displayText = item.name;
-    if (item.expiry) {
-      const today = new Date();
-      const expiryDate = new Date(item.expiry);
-      const timeDiff = expiryDate - today;
-      const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-      if (daysLeft >= 0) {
-        displayText += ` (${daysLeft} days left)`;
-      } else {
-        displayText += ` (Expired)`;
-      }
-    }
-
-    const textSpan = document.createElement('span');
-    textSpan.textContent = displayText;
-    textSpan.style.flexGrow = "1";
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '🗑️';
-    deleteBtn.className = 'delete-pantry-btn';
-    deleteBtn.onclick = () => {
-      if (confirm(`Remove "${item.name}" from Pantry?`)) {
-        pantryList.splice(index, 1);
-        savePantry(pantryList);
-        renderPantry();
-      }
-    };
-
-    itemDiv.style.display = 'flex';
-    itemDiv.style.alignItems = 'center';
-    itemDiv.style.justifyContent = 'space-between';
-    itemDiv.appendChild(textSpan);
-    itemDiv.appendChild(deleteBtn);
-
-    pantryContainer.appendChild(itemDiv);
-  });
 }
 
 
