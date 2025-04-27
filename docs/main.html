@@ -440,6 +440,13 @@ document.getElementById("shop-button").addEventListener("click", async () => {
   const storePrefs = JSON.parse(localStorage.getItem(`storePrefs_${username}`) || "[]");
   const list = JSON.parse(localStorage.getItem(`groceryList_${username}`) || "[]");
 
+  console.log("Click handler triggered!");
+console.log("Username:", username);
+console.log("StorePrefs:", storePrefs);
+console.log("GroceryList:", list);
+console.log("StorePrefs length:", storePrefs.length);
+console.log("List length:", list.length);
+
   if (!storePrefs.length || !list.length) {
     alert("You must have selected grocery stores and items in your list.");
     return;
