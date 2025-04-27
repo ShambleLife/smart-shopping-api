@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  const groceryList = JSON.parse(localStorage.getItem("groceryList_guest")) || [];
+  const user = JSON.parse(localStorage.getItem('user')) || { username: 'guest' };
+  const username = user?.username || 'guest';
+  const groceryList = JSON.parse(localStorage.getItem(`groceryList_${username}`)) || [];
 
   if (groceryList.length === 0) {
     alert("You must have selected grocery items on your list.");
@@ -15,7 +17,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let publixData = [];
   let wholefoodsData = [];
 
-  // Function to scrape GitHub HTML pages
   async function fetchStoreData(url) {
     const res = await fetch(url);
     const text = await res.text();
