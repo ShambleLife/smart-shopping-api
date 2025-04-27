@@ -137,8 +137,8 @@ if (userData && userData.firstName) {
     const addItemForm = document.getElementById('addItemForm');
     const itemNameInput = document.getElementById('item-name');
     const itemQtyInput = document.getElementById('item-qty');
-    const groceryList = JSON.parse(localStorage.getItem(`groceryList_${currentUser}`)) || [];
     const currentUser = JSON.parse(localStorage.getItem("user"))?.username || "guest";
+const groceryList = JSON.parse(localStorage.getItem(`groceryList_${currentUser}`)) || [];
 const groceryListKey = `groceryList_${currentUser}`;
 const storePrefsKey = `storePrefs_${currentUser}`;
 
