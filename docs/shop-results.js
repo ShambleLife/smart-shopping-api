@@ -16,20 +16,39 @@ document.addEventListener("DOMContentLoaded", async () => {
   let wholefoodsData = [];
 
   try {
-    const [krogerResponse, publixResponse, wholefoodsResponse] = await Promise.all([
-      fetch("https://dummyjson.com/products").then(res => res.json()),
-      fetch("publix.json").then(res => res.json()),
-      fetch("wholefoods.json").then(res => res.json())
+    const [krogerHTML, publixHTML, wholefoodsHTML] = await Promise.all([
+      fetch("https://raw.githubusercontent.com/ShambleLife/mock-grocery-data/main/groceries.html").then(res => res.text()),
+      fetch("https://raw.githubusercontent.com/ShambleLife/mock-grocery-data/main/pub.html").then(res => res.text()),
+      fetch("https://raw.githubusercontent.com/ShambleLife/mock-grocery-data/main/wf.html").then(res => res.text())
     ]);
 
-    krogerData = krogerResponse.products || []; // DummyJSON has products
-    publixData = publixResponse; // Your local file is a normal array
-    wholefoodsData = wholefoodsResponse; // Your local file is a normal array
+    krogerData = scrapeHTML(krogerHTML);
+    publixData = scrapeHTML(publixHTML);
+    wholefoodsData = scrapeHTML(wholefoodsHTML);
 
   } catch (error) {
     console.error("Failed to fetch store data:", error);
     alert("Error loading store data. Please try again later.");
     return;
+  }
+
+  function scrapeHTML(htmlString) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, "text/html");
+
+    const items = [];
+    const itemElements = doc.querySelectorAll(".item");
+
+    itemElements.forEach(el => {
+      const name = el.querySelector(".name")?.textContent?.trim();
+      const price = parseFloat(el.querySelector(".price")?.textContent?.replace("$", "").trim());
+
+      if (name && !isNaN(price)) {
+        items.push({ name, price });
+      }
+    });
+
+    return items;
   }
 
   function buildStoreBreakdown(storeItems) {
@@ -38,10 +57,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     normalizedList.forEach(name => {
       const match = storeItems.find(p =>
-        (p.name || p.title)?.toLowerCase?.().trim?.() === name
+        (p.name)?.toLowerCase?.().trim?.() === name
       );
       if (match) {
-        breakdown.push({ name: match.name || match.title, price: match.price });
+        breakdown.push({ name: match.name, price: match.price });
         total += match.price;
       } else {
         breakdown.push({ name, price: 0 });
