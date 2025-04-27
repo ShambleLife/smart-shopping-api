@@ -98,13 +98,6 @@
               <!-- Days will be injected here dynamically -->
             </div>
           </div>
-
-          <div class="box box-b4">
-            <h2>Meal Planner</h2>
-            <div id="meal-planner">
-              <!-- Days will be injected here dynamically -->
-            </div>
-          </div>
           
           <div class="box box-b5">
             <h2>Pantry</h2>
@@ -113,6 +106,10 @@
             </div>
           </div>
           
+
+      <!--<div class="box box-b5">
+        <h2>B5</h2>
+      </div> -->
     </aside>
   </main>
 
@@ -255,24 +252,43 @@ listContainer.appendChild(col3);
   }
 }
   
-function changeQty(index, change) {
-  const list = getList();
-  const currentQty = list[index].qty || 1;
-  const newQty = currentQty + change;
+    function changeQty(index, change) {
+      const list = getList();
+      const currentQty = list[index].qty || 1;
+      const newQty = currentQty + change;
 
-  if (newQty < 1) {
-    if (confirm(`Move "${list[index].name}" to Pantry instead of deleting?`)) {
-      moveToPantry(list[index]);
+      if (newQty < 1) {
+        if (confirm(`Move "${list[index].name}" to Pantry instead of deleting?`)) {
+          moveToPantry(list[index]);
+        }
+        list.splice(index, 1);
+      } else {
+        list[index].qty = Math.min(newQty, 99);
+      }
+
+      saveList(list);
+      renderList();
+      renderPantry();
     }
-    list.splice(index, 1);
-  } else {
-    list[index].qty = Math.min(newQty, 99);
-  }
-  saveList(list);
-  renderList();
-  renderPantry();
-}
+    console.log("Current user:", getCurrentUser());
+    addItemForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = itemNameInput.value.trim();
+      let qty = parseInt(itemQtyInput.value.trim(), 10);
+      if (!name) return;
+  
+      if (isNaN(qty) || qty < 1) qty = 1;
+  
+      const list = getList();
+      list.push({ name, qty });
+      saveList(list);
 
+      saveItemToHistory(name);
+  
+      itemNameInput.value = '';
+      itemQtyInput.value = '';
+      renderList();
+    });
 
     const addItemFormB3 = document.getElementById('addItemFormB3');
 const itemNameInputB3 = document.getElementById('item-name-b3');
@@ -682,6 +698,7 @@ function addSuggestionToList(itemName) {
   }, 1500);
 }
 
+//pantry logic
 const pantryList = JSON.parse(localStorage.getItem(`pantryList_${getCurrentUser()}`)) || [];
 
 function savePantry(list) {
@@ -707,13 +724,16 @@ function moveToPantry(item) {
 function renderPantry() {
   const pantryContainer = document.getElementById('pantry-list');
   pantryContainer.innerHTML = '';
+
   if (pantryList.length === 0) {
     pantryContainer.innerHTML = `<p class="empty-pantry">No items in pantry yet!</p>`;
     return;
   }
+
   pantryList.forEach((item, index) => {
     const itemDiv = document.createElement('div');
     itemDiv.className = 'pantry-item';
+
     let displayText = item.name;
     if (item.expiry) {
       const today = new Date();
@@ -726,12 +746,13 @@ function renderPantry() {
         displayText += ` (Expired)`;
       }
     }
+
     const textSpan = document.createElement('span');
     textSpan.textContent = displayText;
     textSpan.style.flexGrow = "1";
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '🗑';
+    deleteBtn.textContent = '🗑️';
     deleteBtn.className = 'delete-pantry-btn';
     deleteBtn.onclick = () => {
       if (confirm(`Remove "${item.name}" from Pantry?`)) {
@@ -740,19 +761,16 @@ function renderPantry() {
         renderPantry();
       }
     };
+
     itemDiv.style.display = 'flex';
     itemDiv.style.alignItems = 'center';
     itemDiv.style.justifyContent = 'space-between';
-
     itemDiv.appendChild(textSpan);
     itemDiv.appendChild(deleteBtn);
+
     pantryContainer.appendChild(itemDiv);
   });
 }
-
-// Initialize Pantry on page load
-renderPantry();
-
 
 
   </script>
